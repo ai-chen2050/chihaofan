@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吃好饭 · 隐私政策</title>
+<style>
+  :root { --ink: #1e4632; --sub: #4a6a58; --bg: #f6faf7; --card: #ffffff; --line: #dcE8e0; --accent: #2EBD85; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #d8ede0; --sub: #9ab8a6; --bg: #131a16; --card: #1b241f; --line: #2a3830; --accent: #3fd49a; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+         background: var(--bg); color: var(--ink); line-height: 1.85; padding: 24px 16px 48px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header { text-align: center; padding: 24px 0 8px; }
+  header .logo { font-size: 44px; }
+  h1 { font-size: 24px; font-weight: 800; margin: 8px 0 4px; }
+  .meta { font-size: 13px; color: var(--sub); margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px 22px; margin-bottom: 16px; }
+  h2 { font-size: 17px; font-weight: 800; margin: 4px 0 10px; color: var(--accent); }
+  p, li { font-size: 15px; color: var(--ink); }
+  ul { padding-left: 1.2em; }
+  li { margin: 6px 0; }
+  .lead { font-size: 15.5px; font-weight: 600; text-align: center; margin-bottom: 20px; }
+  footer { text-align: center; font-size: 12.5px; color: var(--sub); margin-top: 28px; }
+  a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">🍡</div>
+    <h1>吃好饭 · 隐私政策</h1>
+    <div class="meta">更新日期：2026-07-19</div>
+  </header>
+
+  <p class="lead">我们深知隐私的重要。吃好饭的设计原则是：你的数据只属于你。</p>
+
+  <div class="card">
+    <h2>1. 本地工具，无自有服务器</h2>
+    <ul>
+      <li>本应用是<strong>本地工具客户端，不搭建任何自有后端服务器</strong>；我们不会收集、上传或存储你的任何数据——包括食材、菜单、打卡、记账、成员档案、与 AI 的对话/配餐请求内容，以及你填写的第三方 API 密钥。</li>
+      <li>全部数据仅保存在你的手机本地。删除方式：设置 → 危险操作 → 删除所有数据，即可随时全部清空；AI 服务的 API Key 可在「设置 → AI 配菜服务」中随时清除或更换。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>2. 第三方 AI 服务（可选，仅在你主动授权并发起时）</h2>
+    <ul>
+      <li>你自行配置第三方 AI 服务商（如 DeepSeek、豆包、OpenAI 等）的 API Key 后，配菜/拍照识别/健康周报请求会把相关文本或图片<strong>由本机直接发送至你所选服务商的服务器</strong>；数据传输与处理由该服务商负责，受其隐私政策约束。</li>
+      <li><strong>API Key 仅保存在你本机本地，不会上传至任何服务器。</strong>不配置 AI 则完全离线可用。</li>
+      <li>iCloud 备份（仅 iOS，可选）：备份文件存于你自己的 Apple 账户。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>3. 系统权限用途（均按需申请，可拒绝；除此之外不申请任何权限）</h2>
+    <ul>
+      <li>本应用<strong>不读取通讯录、定位、短信</strong>等与功能无关的权限；网络调用仅在你主动发起请求（AI 配菜、拍照识别等）时发生。</li>
+      <li><strong>通知</strong>：饭点陪伴提醒（一天最多两条，可关闭）。</li>
+      <li><strong>麦克风与语音识别</strong>：与青团团语音聊天时即时转文字，不存储录音。</li>
+      <li><strong>相机/相册</strong>：仅在你主动使用「拍小票识别」时申请，图片仅发往你配置的 AI 服务商，本应用不留存。</li>
+      <li><strong>剪贴板</strong>：仅在你主动点击「复制」类按钮时写入。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>4. 未成年人</h2>
+    <p>本应用不面向 14 周岁以下儿童单独提供服务，建议在监护人指导下使用。</p>
+  </div>
+
+  <div class="card">
+    <h2>5. 联系我们</h2>
+    <p>邮箱：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></p>
+  </div>
+
+  <footer>吃好饭 · 青团团陪你好好吃饭 &nbsp;|&nbsp; <a href="terms.html">用户协议</a></footer>
+</div>
+</body>
+</html>
