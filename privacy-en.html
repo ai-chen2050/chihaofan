@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="icon.png">
+<title>ChiHaoFan · Privacy Policy</title>
+<style>
+  :root { --ink: #1e4632; --sub: #4a6a58; --bg: #f6faf7; --card: #ffffff; --line: #dce8e0; --accent: #2EBD85; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #d8ede0; --sub: #9ab8a6; --bg: #131a16; --card: #1b241f; --line: #2a3830; --accent: #3fd49a; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--ink); line-height: 1.75; padding: 24px 16px 48px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header { text-align: center; padding: 24px 0 8px; }
+  header .logo { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 4px 14px rgba(30,70,50,.18); }
+  h1 { font-size: 24px; font-weight: 800; margin: 8px 0 4px; }
+  .meta { font-size: 13px; color: var(--sub); margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px 22px; margin-bottom: 16px; }
+  h2 { font-size: 17px; font-weight: 800; margin: 4px 0 10px; color: var(--accent); }
+  p, li { font-size: 15px; color: var(--ink); }
+  ul { padding-left: 1.2em; }
+  li { margin: 6px 0; }
+  .lead { font-size: 15.5px; font-weight: 600; text-align: center; margin-bottom: 20px; }
+  footer { text-align: center; font-size: 12.5px; color: var(--sub); margin-top: 28px; }
+  a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="logo" src="icon.png" alt="ChiHaoFan" width="72" height="72">
+    <h1>ChiHaoFan · Privacy Policy</h1>
+    <div class="meta">Last updated: July 19, 2026 &nbsp;|&nbsp; <a href="privacy.html">中文版</a></div>
+  </header>
+
+  <p class="lead">We take privacy seriously. ChiHaoFan is built on one principle: your data belongs to you.</p>
+
+  <div class="card">
+    <h2>1. A Local-Only App, No Servers of Our Own</h2>
+    <ul>
+      <li>ChiHaoFan is a <strong>local-only client app. We do not operate any backend server</strong>, and we do not collect, upload, or store any of your data — including your groceries, meal plans, check-ins, expense records, family profiles, AI conversation / meal-request content, or any third-party API keys you enter.</li>
+      <li>All data is stored only on your device. To delete everything: Settings → Danger Zone → Delete All Data. Your AI API key can be removed or replaced at any time in Settings → AI Meal Service.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>2. Third-Party AI Services (Optional; Only When You Actively Use Them)</h2>
+    <ul>
+      <li>If you configure an API key for a third-party AI provider of your choice (such as DeepSeek, Doubao, or OpenAI), meal-planning / photo-recognition / health-report requests send the relevant text or images <strong>directly from your device to that provider's servers</strong>. Data transmission and processing are handled by that provider under its own privacy policy.</li>
+      <li><strong>Your API key is stored only on your device and is never uploaded to any server.</strong> Without an AI key, the app works fully offline.</li>
+      <li>iCloud backup (iOS only, optional): backup files are stored in your own Apple account.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>3. System Permissions (Requested Only as Needed; Nothing Else Is Ever Requested)</h2>
+    <ul>
+      <li>The app does <strong>not access your contacts, location, or SMS</strong>, or any other permission unrelated to its features. Network requests happen only when you actively initiate one (AI meal planning, photo recognition, etc.).</li>
+      <li><strong>Notifications</strong>: mealtime companion reminders (at most two per day, can be turned off).</li>
+      <li><strong>Microphone &amp; speech recognition</strong>: real-time speech-to-text when you chat with Qingtuantuan by voice; recordings are not stored.</li>
+      <li><strong>Camera / Photos</strong>: requested only when you actively use "Scan Receipt". Images are sent only to the AI provider you configured; the app does not retain them.</li>
+      <li><strong>Clipboard</strong>: written only when you actively tap a "Copy" button.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>4. Children</h2>
+    <p>This app does not provide services specifically for children under 14. Use under the guidance of a guardian is recommended.</p>
+  </div>
+
+  <div class="card">
+    <h2>5. Contact Us</h2>
+    <p>Email: <a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></p>
+  </div>
+
+  <footer>ChiHaoFan · Eat well, with Qingtuantuan by your side &nbsp;|&nbsp; <a href="terms-en.html">Terms of Service</a></footer>
+</div>
+</body>
+</html>
