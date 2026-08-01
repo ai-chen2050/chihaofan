@@ -520,7 +520,14 @@
       '好好吃饭我就会长大🌱 一起把吃饭这件小事认真对待，下载体验一下？',
       '把我拖到喜欢的地方陪你逛～逛够了就来 App Store 把我带走呀！'
     ];
-    if (!hasLottie) { anim.style.display = 'none'; fb.style.display = 'block'; }
+    var petBroken = false;
+    // file:// 直接打开 / CDN 或本地 json 拉不到时，回退成静态图标，别让青团团"消失"
+    function showStaticPet() {
+      petBroken = true;
+      if (cur) { try { cur.destroy(); } catch (e) {} cur = null; }
+      anim.style.display = 'none'; fb.style.display = 'block';
+    }
+    if (!hasLottie) showStaticPet();
 
     function sz() { return pet.offsetWidth; }
     function vw() { return window.innerWidth; } function vh() { return window.innerHeight; }
@@ -533,9 +540,12 @@
     pet.style.top  = cy(vh() - sz() - 20) + 'px';
 
     function play(name, loop) {
-      if (!hasLottie) return;
+      if (!hasLottie || petBroken) return;
       if (cur) { cur.destroy(); cur = null; }
-      cur = lottie.loadAnimation({ container: anim, renderer: 'svg', loop: loop, autoplay: !REDUCE, path: 'haohao_' + name + '.json' });
+      try {
+        cur = lottie.loadAnimation({ container: anim, renderer: 'svg', loop: loop, autoplay: !REDUCE, path: 'haohao_' + name + '.json' });
+        cur.addEventListener('data_failed', showStaticPet); // json 拉不到（file:// / 离线）→ 回退静态图标
+      } catch (e) { showStaticPet(); }
     }
     play('idle', true);
 
