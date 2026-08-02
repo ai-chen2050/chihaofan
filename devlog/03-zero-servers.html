@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../icon.png">
+<title>我做了个不联网的 AI App：0 台服务器是怎么办到的 · 吃好饭</title>
+<meta name="description" content="这个 App 有 AI，但我没有服务器。不是没钱买，是故意不买。代价我会一条条交代清楚。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我做了个不联网的 AI App：0 台服务器是怎么办到的 · 吃好饭">
+<meta property="og:description" content="这个 App 有 AI，但我没有服务器。不是没钱买，是故意不买。代价我会一条条交代清楚。">
+<meta property="og:image" content="../icon.png">
+<meta name="twitter:card" content="summary">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../devlog.css">
+</head>
+<body>
+<div class="scroll-prog" id="prog"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html"><img src="../icon.png" alt="吃好饭" width="32" height="32">吃好饭<span class="brand-sub">开发日记</span></a>
+    <span class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="../devlog.html">开发日记</a>
+      <a href="../support.html">技术支持</a>
+      <button class="theme-btn" type="button" aria-label="switch language" style="font-size:12px;font-weight:800" onclick="location.href='../devlog-en.html'">EN</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="theme">🌙</button>
+      <a class="nav-cta" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>下载</a>
+    </span>
+  </div>
+</nav>
+<article class="wrap post">
+  <a class="back" href="../devlog.html">← 全部开发日记</a>
+  <header class="post-head">
+    <div class="meta">2026-08-26　·　<span class="tag">架构</span><span class="tag">隐私</span></div>
+    <h1>我做了个不联网的 AI App：0 台服务器是怎么办到的</h1>
+    <p class="lead">这个 App 有 AI，但我没有服务器。不是没钱买，是故意不买。代价我会一条条交代清楚。</p>
+  </header>
+  <aside class="toc"><b>本文目录</b><ol><li><a href="#一-这是个反潮流的选择">一、这是个反潮流的选择</a></li><li><a href="#二-三块拼图">二、三块拼图</a></li><li><a href="#三-代价是什么">三、代价是什么</a></li><li><a href="#四-换来了什么">四、换来了什么</a></li><li><a href="#五-那-ai-怎么才能聪明-context-工程">五、那 AI 怎么才能聪明？——Context 工程</a></li><li><a href="#六-一个观点">六、一个观点</a></li></ol></aside>
+  <div class="body">
+<p>这个 App 有 AI 功能，但我没有服务器。</p>
+<p>不是没钱买，是故意不买。</p>
+<p>前两篇讲了「吃好饭」怎么在 27 天里做出来、为什么定价 ¥18。这篇讲架构，也是我个人最想讲的一篇。</p>
+<h2 id="一-这是个反潮流的选择">一、这是个反潮流的选择</h2>
+<p>现在做一个带 AI 的 App，标准姿势基本固定了：</p>
+<p>用户注册账号 → 数据存你的云端数据库 → App 请求打到你的后端 → 后端拿着你的 API Key 去调模型 → 结果返回给用户。</p>
+<p>这套架构成熟、好用、所有教程都这么教。它还有个巨大的商业优势：<strong>数据在你手里</strong>。你能看到用户怎么用、能做推荐、能做增长分析、能拿留存曲线去融资。</p>
+<p>代价是你得养一套东西：服务器、数据库、鉴权、日志、备份、合规。以及一笔每个月都要交的账单。</p>
+<p>这笔账单会反过来定义你的产品。有了固定成本，你就必须有固定收入，于是你必须做订阅；做了订阅，你就必须让用户天天打开。</p>
+<p>我不想走这条路。所以吃好饭的架构是这样的：</p>
+<p><strong>零自建服务器。数据全部存在用户手机本地。AI 请求从手机直连 AI 服务商，不经过我任何一台机器。</strong></p>
+<figure class="figph"><span class="tag">配图</span>架构对比图，传统三层架构 vs 手机直连</figure>
+<h2 id="二-三块拼图">二、三块拼图</h2>
+<p><strong>第一块：本地存储，用 Hive。</strong></p>
+<p>所有数据——家庭档案、冰箱库存、菜谱、账单、青团团的成长记录——都写在手机本地的 Hive 数据库里。没有远程同步，没有账号体系，打开就能用。</p>
+<p><strong>人话翻译：</strong> 你的冰箱里有什么，只有你的手机知道。我不知道，我也没有任何办法知道。</p>
+<p><strong>第二块：AI 走 BYOK（Bring Your Own Key）。</strong></p>
+<p>用户在设置里填自己的 API Key。App 拿着这个 Key，从手机直接向 AI 服务商发请求，响应直接回到手机。</p>
+<p>整条链路上没有我的服务器。我既不中转请求，也不看到内容，更不承担 token 费用。</p>
+<p><strong>人话翻译：</strong> 你自己去 AI 厂商开个户，钥匙在你手上。App 只是替你按按钮，账单是你和厂商之间的事，我不插在中间。</p>
+<p><strong>第三块：备份走用户自己的 iCloud。</strong></p>
+<p>App 有 iCloud 备份，写进的是用户自己 Apple 账户下的 iCloud 容器。我配置了容器标识，但容器里的东西属于用户，不属于我。</p>
+<p>另外还有一条「导出同步码」的路，用来在家人设备之间搬数据。</p>
+<p><strong>人话翻译：</strong> 备份是你的苹果账号在备份，跟我没关系。我连你有没有备份都不知道。</p>
+<h2 id="三-代价是什么">三、代价是什么</h2>
+<p>这一节最重要。一个只讲好处不讲代价的架构介绍，可信度是零。</p>
+<p><strong>代价一：换手机很麻烦。</strong></p>
+<p>没有账号，就没有「登录即恢复」。换手机你得走 iCloud 恢复，或者用导出同步码手动搬。</p>
+<p>这两条路都比「输入密码」麻烦。有些用户会在这一步骂人，我认。</p>
+<p><strong>顺便必须说清楚：本地存储意味着数据可能丢。</strong> 手机丢了、系统重装、误删 App，如果你没备份，数据就是没了。我做不到「绝不丢数据」这种承诺，也不会这么写。请自己定期备份，这不是免责声明，是真的请你去点一下那个备份按钮。</p>
+<p><strong>代价二：我看不到任何用户数据，调 bug 全靠用户描述。</strong></p>
+<p>这个是真的疼。</p>
+<p>传统架构下，用户说「AI 给我配的餐里有我忌口的东西」，我去日志里一捞，请求、上下文、模型返回，一目了然，十分钟定位。</p>
+<p>我现在只能问：您能截个图吗？您档案里忌口是怎么填的？您用的哪个模型？当时冰箱里有什么？</p>
+<p>有时候来回问三四轮还复现不出来。有些 bug 我到现在都不确定修没修好，因为我没法验证。</p>
+<p><strong>没有可观测性，是我为这套架构付出的最大的一笔工程代价。</strong></p>
+<p><strong>代价三：有一整类功能我永远做不了。</strong></p>
+<ul><li>云端排行榜——我不知道别的用户吃了什么。</li><li>家庭实时同步——只能靠导出导入这种笨办法。老婆刚买的菜，我这边不会自动亮起来。</li><li>跨设备实时协作——iPad 和 iPhone 是两台各自独立的设备。</li><li>基于全体用户行为的推荐——做不了，也不想做。</li></ul>
+<p>这些不是「暂时没做」，是架构上就堵死了。除非推翻重来。</p>
+<p><strong>代价四：BYOK 的门槛，是我目前最大的没解决好的问题。</strong></p>
+<p>我得承认这个。</p>
+<p>对工程师来说，「去开个 API Key 填进来」是十秒钟的事。对我妈来说，这句话里每个词她都不认识。</p>
+<p>这直接把一大批用户挡在了 AI 功能门外。我在引导流程里做了详细的图文步骤，但那还是一道墙。</p>
+<p>我没有好办法。能想到的替代方案（我出面中转、送体验额度）都要求我有服务器，那就回到起点了。这是这套架构最硬的疙瘩，我暂时只能承认它在那。</p>
+<h2 id="四-换来了什么">四、换来了什么</h2>
+<p><strong>无账号。</strong> 打开就用，不要手机号，不要微信授权，不要「同意用户协议」。</p>
+<p><strong>无广告。</strong></p>
+<p><strong>无数据收集。</strong> 不是「我们承诺不滥用您的数据」，是我根本没有收集数据的通道。这两句话的强度差得很远——前者是承诺，后者是事实。</p>
+<p><strong>服务器成本 0。</strong></p>
+<p>最后这条最关键，因为它决定了前面几条能不能长期成立。</p>
+<p>我这个项目目前唯一确定的固定成本，是苹果开发者账号 ¥688 一年。没有服务器账单，没有数据库账单，没有模型 token 账单。</p>
+<p>这意味着<strong>我不需要靠订阅活着</strong>。</p>
+<p>这不是道德优越感，是结构决定的。一个每月要烧几千块服务器费的产品，就算创始人再理想主义，账单也会一步步把他推向订阅、推向广告、推向数据变现。我把这条路从架构层面堵死了，就不用天天靠意志力抵抗它。</p>
+<p>上一篇讲定价时我说「订阅在我这里没有道德基础」，说的就是这件事。</p>
+<h2 id="五-那-ai-怎么才能聪明-context-工程">五、那 AI 怎么才能聪明？——Context 工程</h2>
+<p>这一节是给工程师看的，但每段后面我都会翻译。</p>
+<p>先说清楚问题在哪。</p>
+<p>我没有后端，做不了模型微调、做不了 RAG 服务、做不了向量数据库。模型还是用户自带的——可能是个很强的旗舰模型，也可能是个很便宜的小模型。</p>
+<p>所以在我这套架构里，AI 好不好用，<strong>基本不取决于模型多大，取决于我会不会攒 context、会不会选、会不会压缩</strong>。</p>
+<p>这是本地 Agent 的真功夫。核心代码在 <code>lib/services/ai_engine/context_engine.dart</code>。</p>
+<h3 id="分层组装-system-prompt">分层组装 system prompt</h3>
+<p>每次请求，我按固定优先级分层拼装 system prompt：</p>
+<ol><li><strong>人设层</strong> —— 青团团是谁、怎么说话</li><li><strong>安全红线层</strong> —— 过敏、忌口。<strong>这一层永不截断</strong></li><li><strong>此刻状态层</strong> —— 冰箱现有什么、哪些临期、今天吃没吃、打卡状态</li><li><strong>用户画像快照</strong> —— 家庭成员、口味偏好、地域、预算区间</li><li><strong>已装技能片段</strong> —— 用户买了减脂教练，就注入减脂领域的判断规则</li><li><strong>聊天记忆</strong> —— 结构化提取的长期记忆</li><li><strong>滚动摘要 + 最近对话</strong> —— 早期对话压成摘要，最近几轮保留原文</li></ol>
+<p><strong>超出 token 预算时，从低优先级往上截断。</strong></p>
+<p>也就是说，token 不够的时候，先砍掉最近的闲聊，再砍摘要，再砍技能片段……<strong>安全红线是最后一个走的，实际上它永远不会走。</strong></p>
+<p><strong>人话翻译：</strong> 上下文空间不够的时候，宁可让团团忘记你上周聊过什么，也绝不能让它忘记你花生过敏。这个顺序是硬编码的，不是模型自己判断的。</p>
+<p>这点我想强调一下：<strong>安全约束不能交给模型「注意一下」。</strong> 提示词里写一句「请注意用户过敏」是不可靠的，尤其在长上下文里。它必须是工程上的硬保证——这一层在拼装顺序里排第二，在截断顺序里排最后。</p>
+<h3 id="记忆管理">记忆管理</h3>
+<p>聊天记忆不是无限攒的。</p>
+<ul><li><strong>封顶 30 条。</strong> 超了就淘汰。</li><li><strong>入库前去重。</strong> 同一件事说三遍不会占三个坑。</li><li><strong>安全类记忆最后淘汰。</strong> 「我不吃香菜」这条会一直待着，「我今天想吃辣的」会先被挤出去。</li></ul>
+<p>为什么封顶？因为记忆越多，每次请求的 token 成本越高——而这个成本是用户在付。一个无节制往上下文里塞历史的本地 Agent，是在花别人的钱。</p>
+<p><strong>人话翻译：</strong> 团团的脑容量是有限的，而且我故意把它限死了，不然你的 API 账单会变难看。</p>
+<p><strong>这里坦白一件事：30 这个数字是我拍的。</strong></p>
+<p>不是实验出来的，是我觉得「差不多够用又不会太贵」。我没有 A/B 测试的条件——没有服务器，就没有实验平台。这类参数在我这套架构里全靠手感，这也是零服务器的隐性代价之一。</p>
+<h3 id="记忆是可见-可改-可删的">记忆是可见、可改、可删的</h3>
+<p>App 里有个页面叫「<strong>团团记住的你</strong>」。</p>
+<p>打开就能看到它到底记了你哪些事，一条条列着。可以改，可以单条删，可以一键清空。</p>
+<p>这不是为了显得透明。既然记忆会影响 AI 给你的建议，你就该有权知道它记了什么、并且能改掉。模型记错了（这很常见），你不该只能重装 App。</p>
+<figure class="figph"><span class="tag">配图</span>「团团记住的你」页面截图</figure>
+<p><strong>人话翻译：</strong> 它记住的每一件事，你都能翻出来看，看着不顺眼就删掉。</p>
+<h3 id="一个具体例子">一个具体例子</h3>
+<p>你问「今晚吃什么」，实际发出去的不是这五个字，而是一整包：</p>
+<p>你是青团团 → 妈妈花生过敏、爸爸忌辣（<strong>不可截断</strong>）→ 冰箱里有西红柿两个、鸡蛋半盒、五花肉一块，五花肉后天到期 → 家在四川，本周餐饮预算还剩 180 → 装了「一周备餐大师」技能 → 记忆：不吃香菜 → 最近三轮对话。</p>
+<p><strong>人话翻译：</strong> 该说的都说清楚，再普通的模型也能给个像样的答案；什么都不说，再强的模型也只能瞎猜。</p>
+<h2 id="六-一个观点">六、一个观点</h2>
+<p>我想用一个不那么技术的说法结尾。</p>
+<p>现在很多 App 把「我们不收集您的数据」印在宣传图上，当成卖点。</p>
+<p>我觉得这件事本身就有问题。</p>
+<p>对一个工具类 App 来说——一个记冰箱的、一个记账的、一个写笔记的——<strong>不碰你的数据本该是默认设置，而不是需要额外表扬的美德。</strong></p>
+<p>它变成卖点，是因为默认值已经被行业改坏了。改坏的原因也很实在：数据能变现，能拿去讲增长故事。于是「不收集」从基线变成了需要付出成本才能坚持的选择。</p>
+<p>我这套零服务器架构，说到底不是什么技术创新。它就是把默认值改回去而已。</p>
+<p>它有代价。前面第三节我一条条列了：换机麻烦、bug 难查、一整类功能做不了、BYOK 有门槛。这些代价是实打实的，我没有办法把它们说成优点。</p>
+<p>但我愿意付。因为付完之后，我可以在这个 App 的介绍里写一句我完全站得住的话：</p>
+<p><strong>你的冰箱里有什么，只有你知道。</strong></p>
+<p>不是「我们承诺不看」。是我看不到。</p>
+<hr>
+<p>吃好饭 iOS 已上架，App Store 搜「<strong>吃好饭 AI冰箱</strong>」。</p>
+<p>想看代码逻辑的，本文提到的三个文件：<code>lib/services/ai_engine/context_engine.dart</code>、<code>lib/services/purchase_service.dart</code>、<code>lib/services/store_channel.dart</code>。</p>
+<p>下一篇写上架过程中被苹果打回的那些坑。</p>
+<p>留言区继续骂我。</p>
+<p>官网：https://ai-chen2050.github.io/chihaofan 邮箱：blake.chen94@gmail.com</p>
+  </div>
+  <nav class="postnav"></nav>
+</article>
+<footer>
+  <div class="wrap">
+    <div class="cta-card">
+      <h3>吃好饭 · AI 冰箱管家与食谱</h3>
+      <p>记下家里的菜，临期自动提醒，一键按现有食材配出今晚这餐。数据只在你手机里，无账号、无广告。iOS 已上架，安卓版在路上。</p>
+      <a class="appstore-btn" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span class="t"><small>下载于</small><b>App Store</b></span></a>
+    </div>
+    <div class="foot-links"><a href="../devlog.html">开发日记</a><a href="../changelog.html">更新日志</a><a href="../privacy.html">隐私政策</a><a href="../terms.html">用户协议</a><a href="../support.html">技术支持</a></div>
+    <div class="copyright">吃好饭 · 青团团陪你好好吃饭 🍚<br>联系我们：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+  // 主题切换（与首页同一个 localStorage key）
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    function cur() {
+      var a = document.documentElement.getAttribute('data-theme');
+      if (a) return a;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { if (btn) btn.textContent = cur() === 'dark' ? '☀️' : '🌙'; }
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = cur() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+  })();
+  // 阅读进度条
+  (function () {
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    function tick() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }
+    document.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+</body>
+</html>

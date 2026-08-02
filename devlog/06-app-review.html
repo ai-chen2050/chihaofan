@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../icon.png">
+<title>被 App Store 打回的那几次，和我改的东西 · 吃好饭</title>
+<meta name="description" content="ITMS-90683、bundle id 撞车、恢复购买、外链风险、导出合规——逐条贴报错码和 Info.plist 键名，附一份可复制的提审前 checklist。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="被 App Store 打回的那几次，和我改的东西 · 吃好饭">
+<meta property="og:description" content="ITMS-90683、bundle id 撞车、恢复购买、外链风险、导出合规——逐条贴报错码和 Info.plist 键名，附一份可复制的提审前 checklist。">
+<meta property="og:image" content="../icon.png">
+<meta name="twitter:card" content="summary">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../devlog.css">
+</head>
+<body>
+<div class="scroll-prog" id="prog"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html"><img src="../icon.png" alt="吃好饭" width="32" height="32">吃好饭<span class="brand-sub">开发日记</span></a>
+    <span class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="../devlog.html">开发日记</a>
+      <a href="../support.html">技术支持</a>
+      <button class="theme-btn" type="button" aria-label="switch language" style="font-size:12px;font-weight:800" onclick="location.href='../devlog-en.html'">EN</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="theme">🌙</button>
+      <a class="nav-cta" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>下载</a>
+    </span>
+  </div>
+</nav>
+<article class="wrap post">
+  <a class="back" href="../devlog.html">← 全部开发日记</a>
+  <header class="post-head">
+    <div class="meta">2026-09-16　·　<span class="tag">上架</span><span class="tag">踩坑</span></div>
+    <h1>被 App Store 打回的那几次，和我改的东西</h1>
+    <p class="lead">ITMS-90683、bundle id 撞车、恢复购买、外链风险、导出合规——逐条贴报错码和 Info.plist 键名，附一份可复制的提审前 checklist。</p>
+  </header>
+  <aside class="toc"><b>本文目录</b><ol><li><a href="#先声明一件事">先声明一件事</a></li><li><a href="#一-itms-90683-缺-nslocationwheninuseusagedescription">一、ITMS-90683：缺 NSLocationWhenInUseUsageDescription</a></li><li><a href="#二-bundle-id-撞车-我改了两次包名">二、bundle id 撞车，我改了两次包名</a></li><li><a href="#三-iphone-only-targeted_device_family">三、iPhone-only：TARGETED_DEVICE_FAMILY</a></li><li><a href="#四-内购必须有-恢复购买-入口">四、内购必须有「恢复购买」入口</a></li><li><a href="#五-外链风险-我把协议搬进了-app-里">五、外链风险：我把协议搬进了 App 里</a></li><li><a href="#六-导出合规-itsappusesnonexemptencryption">六、导出合规：ITSAppUsesNonExemptEncryption</a></li><li><a href="#七-几件顺手做了-但没做会挨打的事">七、几件顺手做了、但没做会挨打的事</a></li><li><a href="#八-钱的部分">八、钱的部分</a></li><li><a href="#提审前-checklist-可以直接抄走">提审前 checklist（可以直接抄走）</a></li></ol></aside>
+  <div class="body">
+<p>ITMS-90683。</p>
+<p>看到这串东西的时候，我以为我完了。</p>
+<p>那时候我已经把包传上去了，正准备去洗澡，邮件弹出来，标题是「App Store Connect: Your app has one or more issues」。我站在原地把邮件读了三遍。</p>
+<p>后来才知道这玩意儿其实很小。但当时不知道，那种「我是不是做错了什么根本性的事」的感觉，我想很多第一次提审的人都懂。</p>
+<p>这篇把我踩到的坑逐条写下来，<strong>贴真实报错码和真实键名</strong>。写得越具体越有用，所以你会看到一堆代码片段，忍一下。</p>
+<figure class="figph"><span class="tag">配图</span>Xcode / 邮件里的 ITMS-90683 报错截图</figure>
+<h2 id="先声明一件事">先声明一件事</h2>
+<p>我这篇里的「被打回」，严格说分两种：</p>
+<ul><li><strong>自动校验打回</strong>：包传上去，苹果的机器扫一遍，不合规直接退回来。<strong>根本走不到人</strong>。ITMS-9xxxx 系列都是这类。</li><li><strong>人工审核意见</strong>：走到审核员那里，被挑出问题。</li></ul>
+<p>区分这个很重要——自动校验的打回，秒级到分钟级就来了，改完重传就行，不占审核队列。看到 ITMS 别慌，那不是「被拒」。</p>
+<p>我这次的首审实际用时：<strong>【待填：首审实际耗时】</strong>。</p>
+<h2 id="一-itms-90683-缺-nslocationwheninuseusagedescription">一、ITMS-90683：缺 NSLocationWhenInUseUsageDescription</h2>
+<p><strong>现象</strong>：包上传后自动校验失败，邮件退回。</p>
+<p><strong>报错原文（大意）</strong>：<code>ITMS-90683: Missing purpose string in Info.plist</code> —— 你的 App 引用了 <code>NSLocationWhenInUseUsageDescription</code> 相关的能力，但 Info.plist 里没有对应的用途描述字符串。</p>
+<p><strong>我的第一反应</strong>：不可能。我这 App 是管冰箱的，我根本没写过一行定位代码。</p>
+<p><strong>真相</strong>：我确实没写。但我用的相册/文件选择组件，链进来的系统接口里带了定位能力。<strong>苹果的自动校验只看「你的包里链进了什么」，不看「你的 Dart 代码有没有调」。</strong></p>
+<p><strong>我改了什么</strong>：在 <code>ios/Runner/Info.plist</code> 里补上，并且<strong>如实说明我不用它</strong>：</p>
+<pre class="code" data-lang="xml"><code>&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;
+&lt;string&gt;本 App 不使用定位功能。此项仅因所用的相册/文件选择组件依赖系统接口而被要求声明，我们不会获取或上传你的位置信息。&lt;/string&gt;</code></pre>
+<p>然后版本号 bump 到 <code>1.0.0+3</code>，重新构建上传。过了。</p>
+<p><strong>教训</strong>：</p>
+<blockquote><p><strong>凡是链接进包的能力都要有用途描述，哪怕你的代码从没主动调用过。</strong></p></blockquote>
+<p>第三方 SDK 带进来的权限也算。你以为自己没用，链接器不这么认为。</p>
+<p>顺带一句：用途描述别写敷衍话。我这条把「为什么明明不用还要写」解释清楚了，人工审核那关也少一次问询。同一个文件里我还有：</p>
+<pre class="code" data-lang="xml"><code>&lt;key&gt;NSPhotoLibraryUsageDescription&lt;/key&gt;
+&lt;string&gt;用于从相册选择购物小票或食材照片，自动识别并入库到冰箱&lt;/string&gt;</code></pre>
+<p><strong>具体到哪一句话对应哪个功能</strong>，比「用于提供更好的服务」强一百倍。</p>
+<figure class="figph"><span class="tag">配图</span>Info.plist 权限描述段落截图</figure>
+<h2 id="二-bundle-id-撞车-我改了两次包名">二、bundle id 撞车，我改了两次包名</h2>
+<p>这条不是被打回，是我自己给自己挖的坑，但坑得很典型。</p>
+<p><strong>现象</strong>：在开发者后台注册 App ID，填 <code>com.chihaofan.app</code>，提示不可用。</p>
+<p><strong>原因</strong>：这串被我此前另一个免费账号在 Apple 侧占用了。我换成 <code>com.chihaofan.ice</code>——<strong>还是不可用</strong>。</p>
+<p><strong>这里是关键认知</strong>：App ID 在 <strong>Apple 全局命名空间唯一</strong>，跨所有开发者账号。不是「你的账号里没有就能用」，是「全世界没人用过才能用」。</p>
+<p><strong>我改了什么</strong>：换成自己域名的反写——<code>top.chihaofan.app</code>。域名 <code>chihaofan.top</code> 是我的，这串只有我能注册，杜绝再撞。</p>
+<p>连带要改的东西：</p>
+<ul><li>iOS/macOS Bundle ID → <code>top.chihaofan.app</code></li><li>iCloud 容器 → <code>iCloud.top.chihaofan.app</code></li><li>Android applicationId 也统一改成 <code>top.chihaofan.app</code>（跟 iOS、跟华为 AGC 里 <code>agconnect-services.json</code> 的 <code>package_name</code> 对齐）</li><li>内购商品 ID 前缀跟着变</li></ul>
+<p><strong>最疼的一个坑</strong>：安卓那边，<strong>旧包名和新包名在系统眼里是两个不同的应用</strong>。手机上装过旧包的，装不上新包，必须先卸载。我自己的测试机就这么中招过一次，卡在那儿研究了半天为什么「安装失败」。</p>
+<p><strong>教训</strong>：</p>
+<blockquote><p>包名在注册前先去后台试着注册一次，别等到写完代码才发现要改。 反写自有域名是最省事的防撞方案——注意，<strong>苹果和谷歌都不校验你是否真的拥有该域名</strong>，但拥有它能保证别人不会跟你想到一块去。</p></blockquote>
+<p>补一句：包名用户看不见，防不了山寨。真要防山寨得靠名称占位 + 注册商标（第 9/42 类），有商标才能走 App Store Content Dispute 通道。</p>
+<h2 id="三-iphone-only-targeted_device_family">三、iPhone-only：TARGETED_DEVICE_FAMILY</h2>
+<p><strong>现象</strong>：一开始设备支持范围是通用（iPhone + iPad）。结果在 iPad 上，手机 UI 居中、两边补大片灰边，非常难看。</p>
+<p><strong>我改了什么</strong>：<code>ios/Runner.xcodeproj</code> 里把 <code>TARGETED_DEVICE_FAMILY</code> 从 <code>"1,2"</code> 改成 <code>1</code>，<code>SUPPORTED_PLATFORMS = iphoneos</code>。</p>
+<p>改完有两个好处：</p>
+<ol><li><strong>ASC 不再要求 iPad 截图</strong>——少一整套素材要做。</li><li>iPad 上系统把它当手机应用跑（画布 &lt; 600pt，我 <code>lib/app.dart</code> 里那段补灰边逻辑压根不触发），反而没有灰边；台前调度下还能变成一个可拖拽的手机窗口，体验更好。</li></ol>
+<p><strong>这是我这次最蠢的一次返工</strong>：我先花时间做完了一整套 iPad 截图（还专门写了个排版脚本），做完才决定改 iPhone-only。那批图现在躺在 <code>design-spec/appstore_shots/ipad-13/</code> 里，一张也没用上。</p>
+<p><strong>教训</strong>：</p>
+<blockquote><p><strong>先定设备支持范围，再做截图。</strong> 顺序反了，返工的是最费时间的美术活。</p></blockquote>
+<h2 id="四-内购必须有-恢复购买-入口">四、内购必须有「恢复购买」入口</h2>
+<p>这条是苹果<strong>必查项</strong>，没有会被拒，属于「不需要有人告诉你、你就应该知道」的那类。</p>
+<p><strong>我改了什么</strong>：设置页放一张「完整版」状态卡，卡里有「恢复购买」按钮。付费墙半屏底部也有一个。</p>
+<p>技术上就是调一次 <code>restorePurchases()</code>，把商店里这个 Apple 账号名下的非消耗型商品捞回来、重新落解锁态。</p>
+<p>顺带说我的解锁态设计：存在 Hive（<code>proUnlocked</code> + <code>ownedPaidSkins</code>），<strong>不进导出同步码</strong>。</p>
+<p>原因很实际：吃好饭有个「导出同步码」功能给家人同步冰箱和账本用。如果解锁态跟着同步码走，那这串码就是破解码，一个人买了全家甚至全网都能用。换机恢复解锁，走「恢复购买」，那是商店的活。</p>
+<p><strong>教训</strong>：</p>
+<blockquote><p>内购三件事一起做：<strong>购买 → 恢复购买入口 → 卸载重装后能恢复</strong>。 少任何一个都会被打回，第三个还得真机验过才算数。</p></blockquote>
+<figure class="figph"><span class="tag">配图</span>设置页「完整版」状态卡 + 恢复购买按钮截图</figure>
+<h2 id="五-外链风险-我把协议搬进了-app-里">五、外链风险：我把协议搬进了 App 里</h2>
+<p><strong>现象</strong>：一开始「功能介绍 / 用户协议 / 隐私政策」我打算全部外链到官网，App 里放几个跳转按钮。</p>
+<p><strong>为什么改</strong>：苹果对 App 内跳外部网页这件事一直敏感（尤其涉及支付引导时，3.1.1 那条）。我的协议页本身无害，但我不想为了省事去赌审核员当天怎么理解。</p>
+<p><strong>我改了什么</strong>：把三份文档做成 App 内置的 Markdown 常量，放在 <code>lib/features/game/about_docs.dart</code>，App 内直接渲染，不跳浏览器。ASC 那边要填的隐私政策 URL 照旧指向官网（那是硬要求，必须有公网 URL）。</p>
+<p><strong>代价，说实话</strong>：<strong>同一份内容两处维护</strong>。官网 HTML 一份，App 内 Markdown 一份。改任何一处都要同步另一处，包括底部的更新日期。</p>
+<p>我现在还没有好办法，靠的是每次改的时候自己记得。这是我留给未来自己的一颗定时炸弹，写在这里也算立个字据。</p>
+<p><strong>教训</strong>：</p>
+<blockquote><p>法务文本在 App 内可读、不依赖网络，是最稳的做法。 但要提前想好两处怎么同步——最好一开始就从同一份源文件生成两份产物，别像我一样手动抄。</p></blockquote>
+<h2 id="六-导出合规-itsappusesnonexemptencryption">六、导出合规：ITSAppUsesNonExemptEncryption</h2>
+<p><strong>现象</strong>：每次提交都被问「你的 App 是否使用加密」，答一次问卷。</p>
+<p><strong>我改了什么</strong>：Info.plist 里直接声明掉：</p>
+<pre class="code" data-lang="xml"><code>&lt;key&gt;ITSAppUsesNonExemptEncryption&lt;/key&gt;
+&lt;false/&gt;</code></pre>
+<p>我只用系统 HTTPS，属于豁免范围。声明一次，以后每次提审不再答题。</p>
+<p><strong>教训</strong>：能在 Info.plist 里一次性声明的，就别留给每次提交的手工操作。手工操作总有一天会点错。</p>
+<h2 id="七-几件顺手做了-但没做会挨打的事">七、几件顺手做了、但没做会挨打的事</h2>
+<p><strong>onboarding 与购买流的边界</strong>。我修过一批边界情况，典型的是「引导流程还没走完就能摸到付费墙」。这种路径审核员很爱走，因为它就是「乱点」。改法很土：付费墙入口统一加前置判断，引导没完不给进。</p>
+<p><strong>启动屏</strong>。做了品牌着色的启动屏。这个不改也能过，但一个纯白闪屏会让整个 App 显得没做完。</p>
+<p><strong>评分引导</strong>。接了 <code>RatingService</code>（<code>lib/services/rating_service.dart</code>），在「高兴时刻」触发系统评分请求——采购全部完成之后、用餐打卡成功之后。</p>
+<p>这里有个硬约束要记住：<strong>苹果的评分 API 一年最多真正弹 3 次</strong>，你申请了不弹是正常的。所以时机必须挑最爽的那一下，不能上来就问。我自己还加了一层节流：累计打卡 ≥ 5 次才开始问，两次间隔 ≥ 60 天。</p>
+<p><strong>沙盒测试</strong>。提审前必须在 ASC 建沙盒测试员账号，真机登录，走完整四步：</p>
+<p>购买 → 解锁 → 卸载重装 → 恢复购买。</p>
+<p>这四步任何一步断了，上线之后就是真金白银的差评。模拟器测不了，必须真机。</p>
+<h2 id="八-钱的部分">八、钱的部分</h2>
+<p>Apple Developer 个人账号 <strong>¥688 / 年</strong>。到期不续，所有已上架 App 会下架（数据保留），记得设自动续费。</p>
+<p>还有一件<strong>必须主动去点</strong>的事：<strong>Small Business Program</strong>。上一自然年全部 App 收入 ≤ 100 万美元就符合条件，申请通过后苹果抽成从 <strong>30% 降到 15%</strong>。</p>
+<p><strong>不申请就默认 30%</strong>。这不是自动的。</p>
+<p>而且要注意顺序：签《付费应用协议》→ 填 W-8BEN 税表 → 绑银行卡 → 申请 SBP，<strong>这一整套要在第一笔销售之前办完</strong>，否则前面卖的那些就按 30% 抽了。</p>
+<h2 id="提审前-checklist-可以直接抄走">提审前 checklist（可以直接抄走）</h2>
+<p><strong>Info.plist</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> 所有用到的权限都有用途描述，<strong>包括第三方 SDK 链进来的</strong>（相册、相机、麦克风、定位…）</li><li class="task"><input type="checkbox" disabled> 用途描述写具体功能，别写「用于提供更好的服务」</li><li class="task"><input type="checkbox" disabled> <code>ITSAppUsesNonExemptEncryption</code> 已声明</li><li class="task"><input type="checkbox" disabled> 版本号 / 构建号已递增（改完必须 bump，否则传不上去）</li></ul>
+<p><strong>标识符</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> Bundle ID 在开发者后台<strong>已注册</strong>（不注册，ASC 建 App 时下拉框是空的）</li><li class="task"><input type="checkbox" disabled> iCloud 容器标识与 Bundle ID 对齐</li><li class="task"><input type="checkbox" disabled> 内购商品 ID 与代码常量<strong>一字不差</strong>（建后永久不可改）</li></ul>
+<p><strong>内购</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> ASC 里商品已创建、状态正常、价格档已选</li><li class="task"><input type="checkbox" disabled> 商品本地化的显示名与描述已填（必填）</li><li class="task"><input type="checkbox" disabled> 审核信息里的截屏已上传（放付费墙半屏，要能看到价格和购买入口）</li><li class="task"><input type="checkbox" disabled> App 内有「恢复购买」入口，<strong>且在显眼位置</strong></li><li class="task"><input type="checkbox" disabled> 沙盒真机跑通：购买 → 解锁 → 卸载重装 → 恢复购买</li></ul>
+<p><strong>显示与素材</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> <code>TARGETED_DEVICE_FAMILY</code> 已定，<strong>截图按这个来做</strong>（顺序别反）</li><li class="task"><input type="checkbox" disabled> 启动屏不是纯白</li><li class="task"><input type="checkbox" disabled> 6.9" 截图齐了</li></ul>
+<p><strong>合规文本</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> 隐私政策、用户协议有公网 URL（ASC 硬要求）</li><li class="task"><input type="checkbox" disabled> 技术支持网址是<strong>专门的 support 页</strong>，别拿隐私政策页顶替</li><li class="task"><input type="checkbox" disabled> App 内也能读到协议全文（减少外链风险）</li><li class="task"><input type="checkbox" disabled> App 隐私问卷如实填</li></ul>
+<p><strong>账号与钱</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> 付费应用协议已签</li><li class="task"><input type="checkbox" disabled> W-8BEN 已提交（<strong>提交后不可改，填之前逐项核对</strong>）</li><li class="task"><input type="checkbox" disabled> 银行卡已绑</li><li class="task"><input type="checkbox" disabled> Small Business Program 已申请（不点就是 30%）</li></ul>
+<p><strong>流程边界</strong></p>
+<ul><li class="task"><input type="checkbox" disabled> onboarding 没走完时，付费墙、权限申请等敏感路径都进不去</li><li class="task"><input type="checkbox" disabled> 首次启动的隐私弹窗在同意前不申请任何权限</li></ul>
+<hr>
+<p>最后说句实在的。</p>
+<p>被打回不丢人，ITMS 那一串数字看着吓人，本质上只是苹果的机器在提醒你少填了一个字段。真正费时间的从来不是改这些，是<strong>顺序搞错导致的返工</strong>——比如我那批白做的 iPad 截图。</p>
+<p>所以这份 checklist 的价值不在于「有哪些项」，在于「哪些项必须先做」。</p>
+<p>吃好饭 iOS 已上架，App Store 搜「吃好饭 AI冰箱」。这个系列会一直写下去，欢迎在留言区骂我。</p>
+  </div>
+  <nav class="postnav"></nav>
+</article>
+<footer>
+  <div class="wrap">
+    <div class="cta-card">
+      <h3>吃好饭 · AI 冰箱管家与食谱</h3>
+      <p>记下家里的菜，临期自动提醒，一键按现有食材配出今晚这餐。数据只在你手机里，无账号、无广告。iOS 已上架，安卓版在路上。</p>
+      <a class="appstore-btn" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span class="t"><small>下载于</small><b>App Store</b></span></a>
+    </div>
+    <div class="foot-links"><a href="../devlog.html">开发日记</a><a href="../changelog.html">更新日志</a><a href="../privacy.html">隐私政策</a><a href="../terms.html">用户协议</a><a href="../support.html">技术支持</a></div>
+    <div class="copyright">吃好饭 · 青团团陪你好好吃饭 🍚<br>联系我们：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+  // 主题切换（与首页同一个 localStorage key）
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    function cur() {
+      var a = document.documentElement.getAttribute('data-theme');
+      if (a) return a;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { if (btn) btn.textContent = cur() === 'dark' ? '☀️' : '🌙'; }
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = cur() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+  })();
+  // 阅读进度条
+  (function () {
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    function tick() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }
+    document.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../icon.png">
+<title>我给这个 App 定价 ¥18，算了三笔账 · 吃好饭</title>
+<meta name="description" content="¥18，不是 ¥17.99。纠结了一周，最后是被三笔账说服的。附海外定价表和付费墙划法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我给这个 App 定价 ¥18，算了三笔账 · 吃好饭">
+<meta property="og:description" content="¥18，不是 ¥17.99。纠结了一周，最后是被三笔账说服的。附海外定价表和付费墙划法。">
+<meta property="og:image" content="../icon.png">
+<meta name="twitter:card" content="summary">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../devlog.css">
+</head>
+<body>
+<div class="scroll-prog" id="prog"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html"><img src="../icon.png" alt="吃好饭" width="32" height="32">吃好饭<span class="brand-sub">开发日记</span></a>
+    <span class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="../devlog.html">开发日记</a>
+      <a href="../support.html">技术支持</a>
+      <button class="theme-btn" type="button" aria-label="switch language" style="font-size:12px;font-weight:800" onclick="location.href='../devlog-en.html'">EN</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="theme">🌙</button>
+      <a class="nav-cta" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>下载</a>
+    </span>
+  </div>
+</nav>
+<article class="wrap post">
+  <a class="back" href="../devlog.html">← 全部开发日记</a>
+  <header class="post-head">
+    <div class="meta">2026-08-19　·　<span class="tag">定价</span><span class="tag">独立开发</span></div>
+    <h1>我给这个 App 定价 ¥18，算了三笔账</h1>
+    <p class="lead">¥18，不是 ¥17.99。纠结了一周，最后是被三笔账说服的。附海外定价表和付费墙划法。</p>
+  </header>
+  <aside class="toc"><b>本文目录</b><ol><li><a href="#第一笔-心理账-为什么不是-17-99">第一笔：心理账 —— 为什么不是 ¥17.99</a></li><li><a href="#第二笔-转化账-定价贵一点的真实代价">第二笔：转化账 —— 定价贵一点的真实代价</a></li><li><a href="#第三笔-漏斗账-从-付费下载-改成-免费下载-解锁">第三笔：漏斗账 —— 从「付费下载」改成「免费下载 + 解锁」</a></li><li><a href="#海外定价-一条铁律-一堆微调">海外定价：一条铁律，一堆微调</a></li><li><a href="#为什么不做订阅">为什么不做订阅</a></li><li><a href="#付费墙是怎么划的">付费墙是怎么划的</a></li><li><a href="#一条我给自己上的锁">一条我给自己上的锁</a></li><li><a href="#我可能是错的">我可能是错的</a></li></ol></aside>
+  <div class="body">
+<p>¥18，不是 ¥17.99。</p>
+<p>这个数字我纠结了一周，最后是被三笔账说服的。</p>
+<p>上一篇讲了「吃好饭」这 27 天怎么做出来的。这篇讲钱。定价这件事在独立开发里被讨论得很多，但大部分讨论停在「你值多少钱」这个层面。我觉得那是个错误的问题。</p>
+<p>真正的问题是：<strong>这个价格会怎么改变你的分发</strong>。</p>
+<figure class="figph"><span class="tag">配图</span>App Store 内购页面，¥18 解锁进阶版</figure>
+<p>先把结论摆出来。</p>
+<p><strong>吃好饭的收费结构是：免费下载 + ¥18 一次性解锁进阶版。非消耗型内购，商品 ID 是 <code>top.chihaofan.app.pro</code>。没有订阅。</strong></p>
+<p>另外有 8 个 ¥6 的「团团超技能」，2 个免费技能。</p>
+<p>下面拆这三笔账。</p>
+<h2 id="第一笔-心理账-为什么不是-17-99">第一笔：心理账 —— 为什么不是 ¥17.99</h2>
+<p><code>.99</code> 这个尾数是美区心理定价的产物。$0.99、$2.99、$9.99，美国人从小在超市看到大，看到 $2.99 的第一反应是「两块多」而不是「三块」。</p>
+<p>这个套路在国区效果差很多。</p>
+<p>原因很简单：人民币的定价传统里没有这个惯例。国内电商也玩尾数，但玩的是 <code>9.9</code>、<code>19.9</code>、<code>99</code>，不是 <code>.99</code>。你在 App Store 看到 ¥17.99，第一反应不是「便宜」，是「这个价格是从美元换算过来的」。</p>
+<p>它有一种翻译腔。</p>
+<p>¥18 更干净。两位数、无小数点、一眼读完。8 在中文语境里还带点便宜的吉利，虽然我不迷信，但这属于白送的心理分，不要白不要。</p>
+<p>同价位带里我还看过 ¥15 和 ¥20。¥15 太像促销临时价，¥20 是个心理关口——过了 20，用户会开始「认真评估」，而不是「顺手买了」。</p>
+<p>¥18 卡在「顺手」的最上沿。</p>
+<p>这笔账很软，没有数据支撑，就是我的判断。你可以不同意。</p>
+<h2 id="第二笔-转化账-定价贵一点的真实代价">第二笔：转化账 —— 定价贵一点的真实代价</h2>
+<p>这是三笔里最反直觉的一笔。</p>
+<p>我最初的想法很朴素：这东西我做了 27 天，43918 行代码，卖 ¥30 也不过分。少卖点、卖贵点，总收入说不定还更高。</p>
+<p>这个算法错在哪？错在它把「买的人数」当成了自变量。</p>
+<p>在 App Store 里，价格不只影响单笔收入，它影响的是<strong>下载量</strong>，而下载量影响的是<strong>排名</strong>。</p>
+<p>ASO 里有个权重叫下载速度——单位时间内的新增装机。它是排名算法里很重的一项。链条是这样的：</p>
+<p><strong>价越高 → 装机越少 → 下载速度越低 → 排名越靠后 → 曝光越少 → 装机更少。</strong></p>
+<p>这是个负反馈回路，而且它会自我加强。</p>
+<p>所以定价不是在算「单价 × 转化率」，是在算「<strong>单价 × 装机量 × 排名带来的后续曝光</strong>」。第三项是复利，前两项不是。</p>
+<p>一个没什么人知道的新 App，最贵的东西不是开发时间，是曝光。定价高出来的那几块钱，本质上是拿曝光换的。这笔交换在头三个月尤其不划算。</p>
+<p><strong>顺便说一个我没拿来当锚的例子。</strong></p>
+<p>有人会说：Shadowrocket 卖 $2.99 大家照买不误，你怕什么。</p>
+<p>我不拿它当参照。那是刚需垄断型工具——没有像样的免费替代，你不装就干不了事，付费心理是「买通行证」。</p>
+<p>吃好饭是消费级生活方式 App。用户不装它，日子照过，无非是继续点外卖。这两种付费心理隔着一条河。用刚需工具的价格锚点去给生活方式 App 定价，会得出一个自我感觉良好的错误答案。</p>
+<h2 id="第三笔-漏斗账-从-付费下载-改成-免费下载-解锁">第三笔：漏斗账 —— 从「付费下载」改成「免费下载 + 解锁」</h2>
+<p>最开始我的方案是<strong>付费下载</strong>：App Store 上直接标价 ¥18，买了才能装。</p>
+<p>后来改成了免费下载 + 一次性 ¥18 内购解锁。</p>
+<p><strong>从经济上看，这两件事是完全等价的。</strong> 都是一次性付费，都是 ¥18，都没有订阅，用户掏的钱一分不差。</p>
+<p>但漏斗完全不一样。</p>
+<p>付费下载的漏斗是：看到 → 掏钱 → 使用。掏钱这一步卡在<strong>最前面</strong>，卡在用户对你一无所知的时候。</p>
+<p>免费下载的漏斗是：看到 → 装 → 用 → 觉得不错 → 掏钱。掏钱挪到了用户已经把冰箱录进去、已经养了几天青团团之后。</p>
+<p>第二个漏斗的顶端大出一个数量级，而且每一层的说服成本都低得多。</p>
+<p>顺带还有个好处：免费下载的装机量直接喂给上面那笔转化账里的 ASO 权重。两笔账在这里是相乘的。</p>
+<p>代价呢？代价只是我要在代码里加一段解锁状态判断。</p>
+<p><code>lib/services/purchase_service.dart</code> 这个文件，加上恢复购买、加上各个功能点的门禁判断，一天多的活。</p>
+<p>一天多的开发量，换一个大一个数量级的漏斗顶端。这笔账不用算第二遍。</p>
+<p><strong>这里有个坑要提醒后来者：</strong> 一旦选了内购，你就得处理「恢复购买」这条路径。用户换手机、重装、换 Apple ID，都会来找你。付费下载没这个问题。我在这上面返工过。</p>
+<h2 id="海外定价-一条铁律-一堆微调">海外定价：一条铁律，一堆微调</h2>
+<p>基准价定在中国区 ¥18。剩下的事苹果会帮你干——它会自动为全球 175 个商店生成当地价格，还会取整到当地的习惯尾数。</p>
+<p>自动生成的结果大部分能用，但有几档我手动改了。</p>
+<p><strong>美国：$2.99。</strong> 这是英语区消费级 App 的标准入门档，自动换算出来的数字太零碎，不像个价。</p>
+<p><strong>加拿大、英国、澳大利亚、欧元区：对齐 2.99 档。</strong> 同一梯队，用户会互相比价，不该出现某个国家莫名其妙便宜一截。</p>
+<p><strong>港澳台、新加坡：也对齐 2.99 档。</strong> 约 HK$23 / NT$90 / S$3.98。</p>
+<p><strong>马来西亚：保持自动换算。</strong> 这里我没往上调。当地收入水平和上面几个市场不在一个区间，保持亲民更合理。</p>
+<figure class="figph"><span class="tag">配图</span>海外定价对照表</figure>
+<p>然后是那条铁律：</p>
+<p><strong>只能「海外 ≥ 国内」，反过来会被国区用户骂。</strong></p>
+<p>而且骂得有理。国区用户对「同一个 App 中国卖得比外国贵」这件事极其敏感，一旦被截图对比，什么解释都没用。定价可以被认为不合理，但不能被认为不尊重。</p>
+<p><strong>还有一件事：苹果抽成。</strong></p>
+<p>默认 30%。但个人开发者可以申请 App Store Small Business Program，年收入在门槛以下的话，佣金从 30% 降到 15%。</p>
+<p>这个申请不难，但很多人不知道。同样卖 ¥18，抽 30% 和抽 15% 到手差了一倍多的差额。该申的一定要申。</p>
+<p>对了，苹果开发者个人账号 ¥688 一年。这是我这个项目目前唯一确定的固定成本——因为我没有服务器（下一篇细讲）。</p>
+<h2 id="为什么不做订阅">为什么不做订阅</h2>
+<p>订阅是现在最主流的答案，我认真考虑过，最后放弃了。</p>
+<p><strong>第一，我的成本结构不支持订阅的道德基础。</strong></p>
+<p>订阅收的是持续服务费。如果我有服务器、有云端算力、有每月的运维支出，收订阅天经地义。</p>
+<p>但吃好饭是零服务器架构，数据在你手机里，AI 用你自己的 Key。我这边的边际成本近似为零。这种情况下按月收钱，我自己都说服不了自己。</p>
+<p><strong>第二，订阅会改变我对产品的判断。</strong></p>
+<p>一旦收订阅，我就得持续证明「这个月你也该付钱」。这会逼我去做那些让人频繁打开、但不一定真有用的东西。</p>
+<p>我不想在半年后变成一个天天想着怎么提高 DAU 的人。</p>
+<p><strong>第三，工具类订阅在国区的接受度就是低。</strong> 这不是我能扭转的行业惯性。</p>
+<h2 id="付费墙是怎么划的">付费墙是怎么划的</h2>
+<p>划付费墙的时候我给自己定了一条原则：</p>
+<p><strong>免费的那部分，必须自己就能构成一个完整的产品。</strong> 不能是残废版、不能是「试用三次」、不能到处弹窗。</p>
+<p>于是分成了这样：</p>
+<p><strong>免费核心（下载即用）</strong></p>
+<ul><li>记冰箱 → 配餐 → 打卡，这条主链路完整</li><li>青团团<strong>全部</strong>进化形态</li><li>饭点提醒</li><li>记账基础功能</li><li>主题 A</li><li>积分兑换的冰箱皮肤和冰箱贴</li></ul>
+<p><strong>¥18 Pro（一次性）</strong></p>
+<ul><li>多天采购计划</li><li>拍照识别入库</li><li>AI 健康周报</li><li>数据备份与家庭同步</li><li>主题 B / C</li><li>动态 App 图标（会按时间和青团团的状态自动换）</li></ul>
+<p><strong>¥6 团团超技能（8 个，单买）</strong></p>
+<p>减脂教练 / 控糖管理 / 孕期月子 / 增肌 / 宝宝辅食 / 三高慢病 / 中医食养 / 一周备餐大师。</p>
+<p>另外两个免费技能：节气食养官、剩菜改造师。</p>
+<p>技能是给 AI 装的领域视角，装上之后它给你配餐的逻辑会变。</p>
+<p><strong>这里必须说清楚：所有涉及减脂、控糖、孕期、慢病的技能，给出的都是饮食建议，不是医疗建议。</strong> 有基础疾病请听医生的，不要听一只小团子的。</p>
+<figure class="figph"><span class="tag">配图</span>付费墙分层示意图</figure>
+<h2 id="一条我给自己上的锁">一条我给自己上的锁</h2>
+<p>划付费墙的时候，我写了一条约束进文档，字面意思：</p>
+<p><strong>养成与积分，永远不碰钱。</strong></p>
+<p>具体说：</p>
+<ul><li>青团团的<strong>全部</strong>进化形态永远免费。花钱不能让它长得更快、更大、形态更多。</li><li>积分永远只能靠打卡赚，不能买。</li><li>花钱只能买「穿什么」——皮肤、外观、主题。不能买「养到多大」。</li></ul>
+<p>为什么？</p>
+<p>因为打卡养成是这个 App 的留存引擎。用户每天打开它，不是因为想看菜谱，是因为那只团子在等着喂。</p>
+<p>如果我把进化形态做成付费，会发生两件事。</p>
+<p>第一，打卡失去意义。付了钱直接拿到最终形态，那还打什么卡。留存引擎当场熄火。</p>
+<p>第二，也是更根本的：<strong>用户会开始怀疑我做的每一个养成设计的动机。</strong> 这个任务是为了让我坚持吃饭，还是为了逼我掏钱？一旦这个怀疑成立，整套东西的信任基础就没了。</p>
+<p>游戏行业已经把这条路走烂过一遍了。我不想再走。</p>
+<p>穿搭皮肤为什么可以卖？因为它是纯审美，不影响任何进程。你不买，团子照样长到最终形态，只是穿得朴素点。</p>
+<h2 id="我可能是错的">我可能是错的</h2>
+<p>上面这三笔账，全是决策<strong>之前</strong>的推演。目前没有任何上架后的真实数据能证明它们对。</p>
+<p>我知道几个可能翻车的点：</p>
+<p><strong>¥18 可能定低了。</strong> 如果转化率本身就很低，那降价换来的装机量根本不够补偿单价损失。这种情况下涨价才是对的。</p>
+<p><strong>8 个 ¥6 技能可能太碎了。</strong> 用户面对 8 个小额选项时，很可能一个都不买——选择成本超过了单价本身。打包成一个「全技能包」也许更好。这块我确实没想清楚。</p>
+<p><strong>免费核心可能给太多了。</strong> 如果记冰箱 + 配餐 + 打卡这条链路已经够用，¥18 那些功能就成了纯锦上添花。付费理由不够硬。</p>
+<p>所以我打算三个月后回来对账，把真实数字写出来。</p>
+<p>【待填：上架后 90 天的下载量、付费转化率、¥18 与 ¥6 的销售占比、退款率】</p>
+<p>对了那时候如果结论是「我错了」，我会照写。写自己判断对的部分谁都会写。</p>
+<hr>
+<p>吃好饭 iOS 已上架，App Store 搜「<strong>吃好饭 AI冰箱</strong>」。</p>
+<p>下一篇讲架构：我做了个有 AI 功能的 App，但一台服务器都没有。不是没钱买，是故意不买。代价我会诚实交代。</p>
+<p>留言区继续骂我。</p>
+<p>官网：https://ai-chen2050.github.io/chihaofan 邮箱：blake.chen94@gmail.com</p>
+  </div>
+  <nav class="postnav"></nav>
+</article>
+<footer>
+  <div class="wrap">
+    <div class="cta-card">
+      <h3>吃好饭 · AI 冰箱管家与食谱</h3>
+      <p>记下家里的菜，临期自动提醒，一键按现有食材配出今晚这餐。数据只在你手机里，无账号、无广告。iOS 已上架，安卓版在路上。</p>
+      <a class="appstore-btn" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span class="t"><small>下载于</small><b>App Store</b></span></a>
+    </div>
+    <div class="foot-links"><a href="../devlog.html">开发日记</a><a href="../changelog.html">更新日志</a><a href="../privacy.html">隐私政策</a><a href="../terms.html">用户协议</a><a href="../support.html">技术支持</a></div>
+    <div class="copyright">吃好饭 · 青团团陪你好好吃饭 🍚<br>联系我们：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+  // 主题切换（与首页同一个 localStorage key）
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    function cur() {
+      var a = document.documentElement.getAttribute('data-theme');
+      if (a) return a;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { if (btn) btn.textContent = cur() === 'dark' ? '☀️' : '🌙'; }
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = cur() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+  })();
+  // 阅读进度条
+  (function () {
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    function tick() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }
+    document.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+</body>
+</html>

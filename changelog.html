@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="icon.png">
+<title>更新日志 · 吃好饭</title>
+<meta name="description" content="吃好饭每个版本改了什么。发一版更新一次，包括修掉的 bug。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="更新日志 · 吃好饭">
+<meta property="og:description" content="吃好饭每个版本改了什么。发一版更新一次，包括修掉的 bug。">
+<meta property="og:image" content="icon.png">
+<meta name="twitter:card" content="summary">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="devlog.css">
+</head>
+<body>
+<div class="scroll-prog" id="prog"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="吃好饭" width="32" height="32">吃好饭<span class="brand-sub">开发日记</span></a>
+    <span class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="devlog.html">开发日记</a>
+      <a href="support.html">技术支持</a>
+      <button class="theme-btn" type="button" aria-label="switch language" style="font-size:12px;font-weight:800" onclick="location.href='devlog-en.html'">EN</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="theme">🌙</button>
+      <a class="nav-cta" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>下载</a>
+    </span>
+  </div>
+</nav>
+<article class="wrap post">
+  <a class="back" href="devlog.html">← 全部开发日记</a>
+  <header class="post-head">
+    <div class="meta">2026-08-01　·　<span class="tag">更新日志</span></div>
+    <h1>更新日志</h1>
+    <p class="lead">吃好饭每个版本改了什么。发一版更新一次，包括修掉的 bug。</p>
+  </header>
+  
+  <div class="body">
+<p>这里记录「吃好饭」每个版本的变化。</p>
+<p>维护约定（写给我自己）：<strong>发一版就更一次</strong>，改了什么如实写，包括修掉的 bug 和没做完的部分。 与仓库里的 <code>CHANGELOG.md</code> 保持同一份口径。</p>
+<hr>
+<h2 id="1-0-0-2026-08-01">1.0.0 · 2026-08-01</h2>
+<p>首个 App Store 版本。iPhone / iPad。</p>
+<p><strong>核心功能</strong></p>
+<ul><li>可视化虚拟冰箱：四分区收纳、拖拽整理、红黄绿保质期预警、待采购区、一键清理</li><li>今晚吃什么：AI 按「库存优先 → 预算约束 → 忌口规避」生成单日 / 3 日 / 周食谱，单道菜可随手替换</li><li>缺口买菜清单：排好餐自动汇总缺什么，实时预算联动，超支给平价替代</li><li>记账与复盘：四分类自动记账、日 / 周 / 月报表、营养分析</li><li>青团团养成：打卡喂「团气」，进化形态全部免费</li><li>档案中心：多人健康档案，各自独立的忌口与健康目标</li></ul>
+<p><strong>进阶版（¥18 一次性解锁，无订阅）</strong></p>
+<ul><li>多天采购计划、拍照 / 小票识别入库、AI 健康周报</li><li>数据导出导入与 iCloud 备份、界面主题 B/C、动态 App 图标</li></ul>
+<p><strong>关于数据</strong></p>
+<ul><li>全部存在本机，无账号、无服务器、无广告、不收集任何数据</li><li>AI 使用你自己的 API Key，请求从手机直连服务商</li><li>⚠️ 本地存储意味着<strong>换机或卸载前请先备份</strong>（设置里开 iCloud 备份，或导出同步码）</li></ul>
+<hr>
+<h2 id="开发中">开发中</h2>
+<ul><li><strong>安卓版</strong>：Google Play 需要先完成 14 天封闭测试（至少 12 位测试者），所以会晚于 iOS</li><li><strong>华为应用市场</strong>：渠道与支付已接通，在走上架流程</li><li><strong>团团超技能</strong>：8 个专业方向的「脑组件」（减脂 / 控糖 / 孕期月子 / 增肌 / 宝宝辅食 / 三高慢病 / 中医食养 / 一周备餐），</li></ul>
+<p>外加 2 个免费技能（节气食养官 / 剩菜改造师）。技能均为<strong>饮食建议，非医疗建议</strong></p>
+<p>想要什么功能、哪里不好用，直接写邮件给我：&lt;blake.chen94@gmail.com&gt;。</p>
+  </div>
+  <nav class="postnav"></nav>
+</article>
+<footer>
+  <div class="wrap">
+    <div class="cta-card">
+      <h3>吃好饭 · AI 冰箱管家与食谱</h3>
+      <p>记下家里的菜，临期自动提醒，一键按现有食材配出今晚这餐。数据只在你手机里，无账号、无广告。iOS 已上架，安卓版在路上。</p>
+      <a class="appstore-btn" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span class="t"><small>下载于</small><b>App Store</b></span></a>
+    </div>
+    <div class="foot-links"><a href="devlog.html">开发日记</a><a href="changelog.html">更新日志</a><a href="privacy.html">隐私政策</a><a href="terms.html">用户协议</a><a href="support.html">技术支持</a></div>
+    <div class="copyright">吃好饭 · 青团团陪你好好吃饭 🍚<br>联系我们：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+  // 主题切换（与首页同一个 localStorage key）
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    function cur() {
+      var a = document.documentElement.getAttribute('data-theme');
+      if (a) return a;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { if (btn) btn.textContent = cur() === 'dark' ? '☀️' : '🌙'; }
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = cur() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+  })();
+  // 阅读进度条
+  (function () {
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    function tick() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }
+    document.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+</body>
+</html>

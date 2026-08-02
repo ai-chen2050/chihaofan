@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../icon.png">
+<title>给青团团装个「脑组件」：我为什么把 prompt 做成商品 · 吃好饭</title>
+<meta name="description" content="我卖 ¥6 的东西，本质上是一段提示词。这话听起来像割韭菜，我想解释一下它为什么值——顺便把手机端 agent 的 context 工程摊开讲。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给青团团装个「脑组件」：我为什么把 prompt 做成商品 · 吃好饭">
+<meta property="og:description" content="我卖 ¥6 的东西，本质上是一段提示词。这话听起来像割韭菜，我想解释一下它为什么值——顺便把手机端 agent 的 context 工程摊开讲。">
+<meta property="og:image" content="../icon.png">
+<meta name="twitter:card" content="summary">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="../devlog.css">
+</head>
+<body>
+<div class="scroll-prog" id="prog"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html"><img src="../icon.png" alt="吃好饭" width="32" height="32">吃好饭<span class="brand-sub">开发日记</span></a>
+    <span class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="../devlog.html">开发日记</a>
+      <a href="../support.html">技术支持</a>
+      <button class="theme-btn" type="button" aria-label="switch language" style="font-size:12px;font-weight:800" onclick="location.href='../devlog-en.html'">EN</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="theme">🌙</button>
+      <a class="nav-cta" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>下载</a>
+    </span>
+  </div>
+</nav>
+<article class="wrap post">
+  <a class="back" href="../devlog.html">← 全部开发日记</a>
+  <header class="post-head">
+    <div class="meta">2026-09-09　·　<span class="tag">AI</span><span class="tag">商业模式</span></div>
+    <h1>给青团团装个「脑组件」：我为什么把 prompt 做成商品</h1>
+    <p class="lead">我卖 ¥6 的东西，本质上是一段提示词。这话听起来像割韭菜，我想解释一下它为什么值——顺便把手机端 agent 的 context 工程摊开讲。</p>
+  </header>
+  <aside class="toc"><b>本文目录</b><ol><li><a href="#先把话说难听一点">先把话说难听一点</a></li><li><a href="#手机上没有后端-聪明-是另一回事">手机上没有后端，「聪明」是另一回事</a></li><li><a href="#分层-context-七层-和谁先被丢掉">分层 context：七层，和谁先被丢掉</a></li><li><a href="#记忆-团团记住的关于你的事-封顶-30-条">记忆：团团记住的关于你的事，封顶 30 条</a></li><li><a href="#消化时机-我抠的是用户的钱">消化时机：我抠的是用户的钱</a></li><li><a href="#记忆回流-只问一次">记忆回流：只问一次</a></li><li><a href="#那么-6-买的到底是什么">那么，¥6 买的到底是什么</a></li><li><a href="#它和-chatgpt-套壳的区别">它和 ChatGPT 套壳的区别</a></li><li><a href="#三件我没想清楚的事">三件我没想清楚的事</a></li><li><a href="#我给自己划的三条线">我给自己划的三条线</a></li></ol></aside>
+  <div class="body">
+<p>我卖 ¥6 的东西，本质上是一段提示词。</p>
+<p>这话听起来像割韭菜，但我想解释一下为什么它值。</p>
+<p>先说结论：如果你觉得「一段 prompt 凭什么收钱」，你说得没错——<strong>单独一段 prompt 确实不值钱</strong>。值钱的是它接在什么数据上。这篇文章就是讲这件事。</p>
+<figure class="figph"><span class="tag">配图</span>技能货架半屏截图，能看到 2 个免费技能和 8 个 ¥6 技能</figure>
+<h2 id="先把话说难听一点">先把话说难听一点</h2>
+<p>「卖 prompt」在 2026 年已经是个有点脏的词。</p>
+<p>前两年满地都是「9.9 元 10000 条万能提示词」，买回来一看，是从网上抄的模板拼贴。这种东西确实是割韭菜，我不替它辩护。</p>
+<p>所以我给自己划了条线：<strong>我卖的东西如果脱离这个 App 还能用，那它就不值钱。</strong></p>
+<p>反过来说，如果它必须接在你的冰箱、你的账本、你这周吃了什么上面才成立，那它就不是一段可以复制粘贴的文本，而是一套配方。</p>
+<p>至于我卖的是不是后者，看完下面这些你可以自己判断。</p>
+<h2 id="手机上没有后端-聪明-是另一回事">手机上没有后端，「聪明」是另一回事</h2>
+<p>吃好饭没有服务器。AI 是 BYOK——用户自己填 API Key，请求从手机直连服务商，不经过我。</p>
+<p>这个设定带来一个后果：<strong>我没法靠「用更大的模型」让青团团变聪明</strong>。用哪个模型是用户决定的，花的也是用户的钱。</p>
+<p>那还剩什么能做？只剩三件事，也正是这几年 agent harness 在做的事：</p>
+<ul><li><strong>攒</strong>：把用户在结构化数据（冰箱 / 账本 / 打卡）和聊天里透露的长期偏好，沉淀成端上记忆。</li><li><strong>选</strong>：每次提问只把<strong>相关</strong>的那几条喂给模型。</li><li><strong>压缩</strong>：对话长了，把旧内容摘要化，腾出 context 窗口。</li></ul>
+<p>说人话：模型是一个记性很差、但很聪明的临时工。你能做的不是给它换脑子，是每次上工前给它递一张写得刚刚好的纸条。</p>
+<p><strong>这张纸条怎么写，就是我能卖的东西。</strong></p>
+<h2 id="分层-context-七层-和谁先被丢掉">分层 context：七层，和谁先被丢掉</h2>
+<p>系统提示不是一整块字符串，是七层拼出来的，按优先级在 token 预算内组装：</p>
+<ol><li><strong>人设</strong>——青团团的口吻，最小固定</li><li><strong>安全红线</strong>——过敏 / 忌口，<strong>永不截断</strong></li><li><strong>此刻状态</strong>——冰箱现有、临期、今天吃没吃</li><li><strong>用户画像快照</strong>——从结构化数据派生：在减脂还是控糖、几口人、爱不爱吃辣、常做饭还是常点外卖、最近常吃哪几道</li><li><strong>已装技能的专家片段</strong>——付费技能注入的领域提示 + 它专属的 context 配方</li><li><strong>聊天记忆</strong>——长期偏好笔记</li><li><strong>滚动摘要 + 最近几轮对话</strong>——<strong>最先被截断的那层</strong></li></ol>
+<p>超预算的时候，从第 7 层往上丢，整层丢，不做半截截断。第 2 层钉死，任何情况下都不动。</p>
+<p>说人话：<strong>宁可让团团忘了你上周聊过什么，也不能让它忘了你对花生过敏。</strong></p>
+<p>代码里长这样（<code>lib/services/ai_engine/context_engine.dart</code>）：</p>
+<pre class="code"><code>ContextBuilder（harness 核心）
+  ├─ 收集各 ContextProvider 的紧凑文本 + 优先级 + token 估算
+  ├─ 叠加「已装技能」声明要注入的片段与所需 provider
+  └─ 按优先级在 token 预算内组装最终 system prompt
+
+ContextProvider（数据源统一接口）
+  · 冰箱库存/临期  · 本周营养  · 本周花销/浪费
+  · 成员健康(慢病/目标/身份)  · 口味&amp;做饭习惯  · 吃过啥  · 聊天记忆
+  每个: toContext() -&gt; (text, priority, tokenEstimate)</code></pre>
+<p><code>assemble()</code> 默认 token 预算 2200。token 估算我用的是最土的办法：<strong>中文按 1 个字 ≈ 1 token 算</strong>。这是个保守上界，宁可少塞也不超窗。</p>
+<p>说人话：算不准就往贵了算，反正超窗是硬故障，浪费一点只是可惜。</p>
+<figure class="figph"><span class="tag">配图</span>分层 context 示意图，七层堆叠，第 2 层标「钉死」，第 7 层标「最先丢」</figure>
+<h2 id="记忆-团团记住的关于你的事-封顶-30-条">记忆：团团记住的关于你的事，封顶 30 条</h2>
+<p>端上有一份 <code>chatMemory</code>，一条条写着「团团记住的关于你的事」：</p>
+<p>「不吃香菜」「在减脂」「晚上不吃主食」「孩子挑食」。</p>
+<p>每条带类型（忌口 / 慢病 / 目标 / 偏好 / 事实）、时间、来源。忌口和慢病算安全类，注入时进红线层，淘汰时最后才丢。</p>
+<ul><li><strong>怎么攒</strong>：每次聊完，用<strong>用户自己的模型</strong>跑一次轻量抽取——把对话变成「值得长期记住的饮食/健康偏好」JSON，去重并入，<strong>封顶 30 条</strong>。</li><li><strong>怎么用</strong>：提问时按相关度 + 新鲜度挑几条注入第 6 层。检索用的是 bigram 关键词命中加新鲜度加权，<strong>没上向量</strong>——三十条数据上向量库，是给自己找活干。</li><li><strong>谁说了算</strong>：App 里有个「团团记住的你」页面，可看、可改、可删、可清空。</li></ul>
+<p>说人话：它记的东西你随时能翻出来打脸，这是记忆功能唯一诚实的做法。</p>
+<p><strong>封顶 30 条这个数字，是我拍脑袋定的。</strong> 没有实验支撑，纯粹是「感觉够用又不会把 context 撑爆」。这是我这套设计里最没底气的一个常量。</p>
+<figure class="figph"><span class="tag">配图</span>「团团记住的你」管理页截图，能看到条目类型标签和删除按钮</figure>
+<h2 id="消化时机-我抠的是用户的钱">消化时机：我抠的是用户的钱</h2>
+<p>抽记忆要调一次模型，摘要也要调一次。这两次调用花的都是用户的 API 额度。</p>
+<p>所以我把它们合并了：<strong>离开聊天页时，一次性做一次「消化」</strong>——滚动摘要 + 记忆抽取，合并成一次 LLM 调用，temperature 0.2，至少有两轮新对话才触发，失败就静默跳过、下次再来。</p>
+<p>说人话：用户不会因为「后台又偷偷调了一次」骂我，因为一次聊天最多多花一次调用，而且他人已经退出去了，感知不到延迟。</p>
+<p>这是我在整个 AI 设计里花时间最多的一个决定。不是技术难，是<strong>每多调一次接口，我都在花别人的钱</strong>，这种约束反而逼出了更克制的方案。</p>
+<h2 id="记忆回流-只问一次">记忆回流：只问一次</h2>
+<p>聊天里团团记住了「不吃香菜」，接下来会弹一张很轻的确认卡：</p>
+<blockquote><p>「写进档案，让配餐也避开？」</p></blockquote>
+<p>采纳了，这条忌口就写进就餐成员档案，真的参与配餐的硬过滤——不是嘴上说说，是引擎层面直接把含香菜的菜筛掉。</p>
+<p>关键在于：<strong>采纳或拒绝，都只问一次</strong>。每条记忆有个 <code>synced</code> 标记，处理过就不再打扰。</p>
+<p>说人话：AI 帮你改设置这件事，越权一次就再也不会被信任。所以宁可少问，不能追问。</p>
+<h2 id="那么-6-买的到底是什么">那么，¥6 买的到底是什么</h2>
+<p>技能在代码里是一个纯数据对象，没有后端：</p>
+<pre class="code"><code>AiSkill {
+  id, 名称, 图标, 领域,
+  systemPromptFragment,   // 专家人设与方法论
+  contextRecipe,          // 依赖哪些 provider、怎么强调
+  presets,                // 输入框上方的快捷问题
+  outputSchema,           // 结构化产出
+  localTools?,            // 可选本地小工具
+  productId, version
+}</code></pre>
+<p>注意 <code>contextRecipe</code> 这一项。<strong>这才是技能之间真正的区别。</strong></p>
+<p>「减脂教练」和「控糖管理」的人设片段可能都只有一两百字，但它们要的 context 完全不同：减脂要盯热量缺口和蛋白质，会重点拉本周营养和成员目标；控糖要看碳水配比和 GI，冰箱库存的排序逻辑都不一样。</p>
+<p>首批上了 8 个付费专家，统一 ¥6 一次性买断，非消耗型，没有订阅：</p>
+<div class="tw"><table><thead><tr><th>技能</th><th>一句话</th></tr></thead><tbody><tr><td>减脂教练</td><td>算清热量缺口，按你的冰箱出低卡餐</td></tr><tr><td>控糖管理</td><td>低 GI 优先，稳住餐后血糖</td></tr><tr><td>孕期/月子营养</td><td>分阶段孕产营养，禁忌食材硬过滤</td></tr><tr><td>增肌食谱</td><td>高蛋白配餐，训练日休息日分开算</td></tr><tr><td>宝宝辅食</td><td>按月龄进阶，过敏原引入有节奏</td></tr><tr><td>三高慢病食养</td><td>控压控脂控尿酸，红线食材有替代</td></tr><tr><td>中医食养</td><td>辨体质、顺时令，药食同源</td></tr><tr><td>一周备餐大师</td><td>一次采购分装复用，工作日不慌</td></tr></tbody></table></div>
+<p>商品 ID 统一是 <code>top.chihaofan.app.skill.&lt;id&gt;</code>，比如 <code>top.chihaofan.app.skill.slim_coach</code>。</p>
+<p>另外有 2 个<strong>免费</strong>技能：节气食养官、剩菜改造师。放免费不是做慈善，是让人先尝到「装了脑组件确实不一样」的体感——尝不到，后面 8 个我一个也卖不出去。</p>
+<p><strong>这里必须说清楚：以上全部是饮食建议，不是医疗建议。</strong> 减脂、控糖、孕期、慢病这些场景，技能会给配餐思路，但它替代不了医生。这句话我写在了 App 里，也写在这里。</p>
+<h2 id="它和-chatgpt-套壳的区别">它和 ChatGPT 套壳的区别</h2>
+<p>这是我被问最多的一句：「这不就是套壳吗？」</p>
+<p>区别只有一句话：<strong>套壳不知道你冰箱里有什么。</strong></p>
+<p>你可以把「减脂教练」那段 prompt 原样复制到任何一个通用聊天框里。然后你会得到一份很标准、很正确、也很没用的建议——因为它不知道你冰箱里躺着半棵白菜、两个鸡蛋和一块明天就到期的豆腐。</p>
+<p>它也不知道你这周已经吃了三顿面，不知道你家有个不吃香菜的人，不知道你这个月买菜预算还剩多少。</p>
+<p>我知道。因为这些数据本来就在这台手机上，是用户自己记进去的。</p>
+<p>所以我卖的不是 prompt，是 <strong>prompt × 本地数据</strong>。前者可以抄，后者抄不走——这不是因为我技术多好，纯粹是因为<strong>数据在用户手机里，而我做了个能读到它的壳</strong>。</p>
+<p>顺带一提，正因为记忆是本地的，它有个别人做不到的属性：<strong>你能一键清空</strong>。别家的「记住你」是数据在他们服务器上，你清不掉。记忆和摘要也不进导出同步码——同步码是给家人同步冰箱账本用的，记忆太私人，只随本人 iCloud 备份走。</p>
+<h2 id="三件我没想清楚的事">三件我没想清楚的事</h2>
+<p><strong>一、一次只能装一个技能。</strong></p>
+<p><code>equippedSkillId</code> 是单数。装了减脂教练就装不了备餐大师。</p>
+<p>我当时的理由是「专家片段叠加会互相打架，也会挤爆 context」。这理由站得住，但对一个既在减脂又要给孩子做辅食的人来说，就是难用。多技能怎么共存，我到现在没想明白。</p>
+<p><strong>二、技能上新 = 发版。</strong></p>
+<p>技能内容随 App 版本内置，加一个技能要发一次版。好处是不触发任何热更新合规问题，坏处是节奏完全卡在我一个人身上。</p>
+<p>远期可以做后端下发，但那会引出一堆合规问题，暂时不做。</p>
+<p><strong>三、我还不知道它到底值不值 ¥6。</strong></p>
+<p>技能质量是这门生意的命门。如果一个 ¥6 的技能给出的东西没有明显强过免费版，那它就是骗钱，退款和差评是应得的。</p>
+<p><strong>目前的购买数据和退款数据：【待填：技能购买 / 退款数据】。</strong> 等有了我再写一篇，难看也照发。</p>
+<h2 id="我给自己划的三条线">我给自己划的三条线</h2>
+<ul><li>技能全部是<strong>饮食建议，不是医疗建议</strong>；过敏和忌口在任何 context 压缩下都不许被挤掉。</li><li>模型永远是用户自己的（BYOK）。我不代收 AI 费用，也不做转售。</li><li><strong>养成和积分永远不碰钱。</strong> 青团团的全部进化形态靠打卡拿，一分钱都不卖。碰了它，我就把自己的留存引擎拆了。</li></ul>
+<hr>
+<p>回到开头那个问题。</p>
+<p>卖 prompt 是不是割韭菜？如果那段 prompt 脱离产品还能用，那多半是。如果它必须接在用户自己的数据上才成立，那它就是一个功能，只不过实现方式恰好是文本。</p>
+<p>至于我做的属于哪种，欢迎你装完之后回来骂我。</p>
+<p>吃好饭 iOS 已上架，App Store 搜「吃好饭 AI冰箱」。这个系列会一直写下去，欢迎在留言区骂我。</p>
+  </div>
+  <nav class="postnav"></nav>
+</article>
+<footer>
+  <div class="wrap">
+    <div class="cta-card">
+      <h3>吃好饭 · AI 冰箱管家与食谱</h3>
+      <p>记下家里的菜，临期自动提醒，一键按现有食材配出今晚这餐。数据只在你手机里，无账号、无广告。iOS 已上架，安卓版在路上。</p>
+      <a class="appstore-btn" href="https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863" target="_blank" rel="noopener"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span class="t"><small>下载于</small><b>App Store</b></span></a>
+    </div>
+    <div class="foot-links"><a href="../devlog.html">开发日记</a><a href="../changelog.html">更新日志</a><a href="../privacy.html">隐私政策</a><a href="../terms.html">用户协议</a><a href="../support.html">技术支持</a></div>
+    <div class="copyright">吃好饭 · 青团团陪你好好吃饭 🍚<br>联系我们：<a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+  // 主题切换（与首页同一个 localStorage key）
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    function cur() {
+      var a = document.documentElement.getAttribute('data-theme');
+      if (a) return a;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { if (btn) btn.textContent = cur() === 'dark' ? '☀️' : '🌙'; }
+    paint();
+    if (btn) btn.addEventListener('click', function () {
+      var next = cur() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      paint();
+    });
+  })();
+  // 阅读进度条
+  (function () {
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    function tick() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }
+    document.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+</body>
+</html>
