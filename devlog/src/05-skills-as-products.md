@@ -5,7 +5,7 @@ summary: 我卖 ¥6 的东西，本质上是一段提示词。这话听起来像
 tags: AI, 商业模式
 lang: zh
 order: 4
-status: draft
+status: published
 ---
 
 # 给青团团装个「脑组件」：我为什么把 prompt 做成商品

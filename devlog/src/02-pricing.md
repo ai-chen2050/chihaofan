@@ -5,7 +5,7 @@ summary: ¥18，不是 ¥17.99。纠结了一周，最后是被三笔账说服�
 tags: 定价, 独立开发
 lang: zh
 order: 2
-status: draft
+status: published
 ---
 
 # 我给这个 App 定价 ¥18，算了三笔账

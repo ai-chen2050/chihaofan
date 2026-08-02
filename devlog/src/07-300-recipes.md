@@ -5,7 +5,7 @@ summary: 300 道菜、193 种食材、22 种撑起一半。整理完这个库我
 tags: 数据, 做饭
 lang: zh
 order: 6
-status: draft
+status: published
 ---
 
 # 我把 300 道家常菜塞进 App 后，发现中国人做饭有三个规律

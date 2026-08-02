@@ -5,7 +5,7 @@ summary: ITMS-90683、bundle id 撞车、恢复购买、外链风险、导出合
 tags: 上架, 踩坑
 lang: zh
 order: 5
-status: draft
+status: published
 ---
 
 # 被 App Store 打回的那几次，和我改的东西

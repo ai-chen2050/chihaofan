@@ -5,7 +5,7 @@ summary: 四条渠道、四套收费逻辑，代码怎么分叉不打架，华�
 tags: 上架, 安卓, 华为
 lang: zh
 order: 7
-status: draft
+status: published
 ---
 
 # 安卓 / 华为版上架记：一个人怎么伺候四个应用商店

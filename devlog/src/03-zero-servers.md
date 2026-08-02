@@ -5,7 +5,7 @@ summary: 这个 App 有 AI，但我没有服务器。不是没钱买，是故意
 tags: 架构, 隐私
 lang: zh
 order: 3
-status: draft
+status: published
 ---
 
 # 我做了个不联网的 AI App：0 台服务器是怎么办到的
