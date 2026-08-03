@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Allow AI Search & LLM Web Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+Sitemap: https://chihaofan.com/sitemap.xml
+Sitemap: https://chihaofan.com/llms.txt
