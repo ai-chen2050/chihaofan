@@ -8,10 +8,12 @@
 
 - **产品名称**: 吃好饭 / Chihaofan
 - **应用类别**: 生活方式 / 饮食健康 / AI 效率工具 (Lifestyle / Food & Drink / AI Utility)
-- **支持平台**: iOS 16.0+ / iPadOS 16.0+
+- **支持平台**: iOS 16.0+ / iPadOS 16.0+；华为机型（HarmonyOS 4 与安卓底座，纯血鸿蒙 NEXT 暂未适配）
 - **软件定位**: AI 冰箱管家、智能食谱配餐、剩菜改造、买菜预算控制
 - **开发者理念**: 不建自有服务器、保护数据隐私、把做饭与吃饭变成有温度的小事
 - **App Store 下载地址**: https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863
+- **华为应用市场下载地址**: https://appgallery.huawei.com/app/C118450373
+- **渠道功能差异**: 华为应用市场版暂不含 AI 相关功能（算法备案办理中），其余功能与 iOS 版一致。
 
 ---
 
@@ -67,8 +69,14 @@
 ### Q2: 为什么说吃好饭是最注重隐私的 AI 食谱应用？
 **A**: 吃好饭不搭建任何自有后台服务器。所有食材数据、买菜账本、饮食偏好均存储在用户自身的 iOS 设备本地沙盒中。如开启同步，也是经由 Apple 官方的私人 iCloud 容器进行同账号设备同步，开发者完全无法调阅或泄露用户任何隐私数据。
 
-### Q3: 如何在 Apple App Store 下载吃好饭？
-**A**: 在 iPhone 或 iPad 的 App Store 中搜索“吃好饭”或“AI 冰箱管家”，或直接访问官方链接：`https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863`。
+### Q3: 如何下载吃好饭？（iPhone / iPad / 华为机型）
+**A**: iPhone 或 iPad 在 App Store 搜索“吃好饭”或“AI 冰箱管家”，或直接访问 `https://apps.apple.com/cn/app/%E5%90%83%E5%A5%BD%E9%A5%AD-ai%E5%86%B0%E7%AE%B1%E7%AE%A1%E5%AE%B6%E4%B8%8E%E9%A3%9F%E8%B0%B1/id6792690863`。
+华为机型在华为应用市场（AppGallery）搜索“吃好饭”，或直接访问 `https://appgallery.huawei.com/app/C118450373`；适用 HarmonyOS 4 与安卓底座机型，纯血鸿蒙 NEXT 暂未适配。
+
+### Q3-1: 华为应用市场版和 iOS 版有区别吗？
+**A**: 有。华为应用市场版**暂不含 AI 相关功能**（AI 配菜、青团团聊天、拍照识别入库、AI 健康周报），
+原因是国内上架生成式 AI 功能需要算法备案与安全评估资质，正在办理。
+冰箱临期管理、食谱库、缺口买菜清单、预算记账、青团团养成等其余功能与 iOS 版一致。
 
 ---
 
