@@ -309,8 +309,28 @@
   @media (max-width: 760px) {
     section { padding: 64px 0; } .hero { padding: 72px 0 64px; }
     .grid { grid-template-columns: 1fr; } .nav-links a:not(.nav-cta) { display: none; }
+    .nav-links { gap: 10px; }
     #pet { width: 108px; height: 108px; }
   }
+  /* 顶栏的华为应用市场入口：只放标记，描边款，不跟主 CTA 抢重量。
+     纯图标是为了窄屏——360/375 上再塞一段文字，顶栏会被挤爆。 */
+  .nav-cta.hw { background: transparent; color: var(--ink); border: 1.5px solid var(--line); padding: 7px 13px; }
+  .nav-cta.hw:hover { color: var(--brand-deep); border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); opacity: 1; }
+  .nav-cta.hw svg { width: 15px; height: 15px; }
+  /* 青团团气泡里的次级入口 */
+  .pet-bubble .pet-cta.alt { background: transparent; color: var(--ink); border: 1.5px solid var(--line); margin-top: 8px; }
+  .pet-bubble .pet-cta.alt:hover { color: var(--brand-deep); border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); opacity: 1; }
+  .pet-hw-note { margin: 8px 0 0; font-size: 11px; line-height: 1.5; color: var(--sub); }
+  /* 华为 logo 用品牌红。**把 fill 写在 path 上，不要写在 svg 上**——
+     容器侧的 .appstore-btn svg / .nav-cta svg / .pet-bubble .pet-cta svg
+     都是 fill:currentColor，特异性分别是 (0,1,1)/(0,1,1)/(0,2,1)，
+     跟它们比特异性只会没完没了（2026-08-17 就是这么先漏了 hero 和页脚、
+     又漏了青团团气泡）。那些规则只作用在 svg 元素上，path 是**继承**来的；
+     而 path 上的直接声明永远赢过继承值，跟祖先选择器写得多具体无关。
+     所以下面这条一次性覆盖全部位置，以后加新容器也不会再被压掉。 */
+  .hw-mark path { fill: #CF0A2C; }
+  :root[data-theme="dark"] .hw-mark path { fill: #F0334F; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hw-mark path { fill: #F0334F; } }
 </style>
 </head>
 <body>
@@ -332,6 +352,7 @@
         <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
         Get
       </a>
+      <a class="nav-cta hw" href="https://appgallery.huawei.com/app/C118450373" target="_blank" rel="noopener" aria-label="Get it on Huawei AppGallery" title="Get it on Huawei AppGallery"><svg viewBox="0 0 24 24" aria-hidden="true" class="hw-mark"><path d="M3.67 6.14S1.82 7.91 1.72 9.78v.35c.08 1.51 1.22 2.4 1.22 2.4 1.83 1.79 6.26 4.04 7.3 4.55 0 0 .06.03.1-.01l.02-.04v-.04C7.52 10.8 3.67 6.14 3.67 6.14zM9.65 18.6c-.02-.08-.1-.08-.1-.08l-7.38.26c.8 1.43 2.15 2.53 3.56 2.2.96-.25 3.16-1.78 3.88-2.3.06-.05.04-.09.04-.09zm.08-.78C6.49 15.63.21 12.28.21 12.28c-.15.46-.2.9-.21 1.3v.07c0 1.07.4 1.82.4 1.82.8 1.69 2.34 2.2 2.34 2.2.7.3 1.4.31 1.4.31.12.02 4.4 0 5.54 0 .05 0 .08-.05.08-.05v-.06c0-.03-.03-.05-.03-.05zM9.06 3.19a3.42 3.42 0 00-2.57 3.15v.41c.03.6.16 1.05.16 1.05.66 2.9 3.86 7.65 4.55 8.65.05.05.1.03.1.03a.1.1 0 00.06-.1c1.06-10.6-1.11-13.42-1.11-13.42-.32.02-1.19.23-1.19.23zm8.299 2.27s-.49-1.8-2.44-2.28c0 0-.57-.14-1.17-.22 0 0-2.18 2.81-1.12 13.43.01.07.06.08.06.08.07.03.1-.03.1-.03.72-1.03 3.9-5.76 4.55-8.64 0 0 .36-1.4.02-2.34zm-2.92 13.07s-.07 0-.09.05c0 0-.01.07.03.1.7.51 2.85 2 3.88 2.3 0 0 .16.05.43.06h.14c.69-.02 1.9-.37 3-2.26l-7.4-.25zm7.83-8.41c.14-2.06-1.94-3.97-1.94-3.98 0 0-3.85 4.66-6.67 10.8 0 0-.03.08.02.13l.04.01h.06c1.06-.53 5.46-2.77 7.28-4.54 0 0 1.15-.93 1.21-2.42zm1.52 2.14s-6.28 3.37-9.52 5.55c0 0-.05.04-.03.11 0 0 .03.06.07.06 1.16 0 5.56 0 5.67-.02 0 0 .57-.02 1.27-.29 0 0 1.56-.5 2.37-2.27 0 0 .73-1.45.17-3.14z"/></svg>Huawei</a>
     </span>
   </div>
 </nav>
@@ -349,7 +370,7 @@
     <span style="left:88%; animation-duration:20s; animation-delay:5s;  font-size:22px;">🍎</span>
   </div>
   <div class="wrap">
-    <span class="eyebrow">🍏 On the App Store · iPhone / iPad</span>
+    <span class="eyebrow">🍏 App Store · 🌸 AppGallery · iPhone / iPad / Huawei</span>
     <span class="app-badge"><span class="ring"></span><img src="icon.png" alt="Chihaofan app icon" width="116" height="116"></span>
     <h1 class="grad-text">Chihaofan</h1>
     <div class="tag grad-text">AI Fridge Manager &amp; Recipes</div>
@@ -359,8 +380,15 @@
         <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
         <span class="t"><small>Download on the</small><b>App Store</b></span>
       </a>
+      <a class="appstore-btn alt" href="https://appgallery.huawei.com/app/C118450373" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="hw-mark"><path d="M3.67 6.14S1.82 7.91 1.72 9.78v.35c.08 1.51 1.22 2.4 1.22 2.4 1.83 1.79 6.26 4.04 7.3 4.55 0 0 .06.03.1-.01l.02-.04v-.04C7.52 10.8 3.67 6.14 3.67 6.14zM9.65 18.6c-.02-.08-.1-.08-.1-.08l-7.38.26c.8 1.43 2.15 2.53 3.56 2.2.96-.25 3.16-1.78 3.88-2.3.06-.05.04-.09.04-.09zm.08-.78C6.49 15.63.21 12.28.21 12.28c-.15.46-.2.9-.21 1.3v.07c0 1.07.4 1.82.4 1.82.8 1.69 2.34 2.2 2.34 2.2.7.3 1.4.31 1.4.31.12.02 4.4 0 5.54 0 .05 0 .08-.05.08-.05v-.06c0-.03-.03-.05-.03-.05zM9.06 3.19a3.42 3.42 0 00-2.57 3.15v.41c.03.6.16 1.05.16 1.05.66 2.9 3.86 7.65 4.55 8.65.05.05.1.03.1.03a.1.1 0 00.06-.1c1.06-10.6-1.11-13.42-1.11-13.42-.32.02-1.19.23-1.19.23zm8.299 2.27s-.49-1.8-2.44-2.28c0 0-.57-.14-1.17-.22 0 0-2.18 2.81-1.12 13.43.01.07.06.08.06.08.07.03.1-.03.1-.03.72-1.03 3.9-5.76 4.55-8.64 0 0 .36-1.4.02-2.34zm-2.92 13.07s-.07 0-.09.05c0 0-.01.07.03.1.7.51 2.85 2 3.88 2.3 0 0 .16.05.43.06h.14c.69-.02 1.9-.37 3-2.26l-7.4-.25zm7.83-8.41c.14-2.06-1.94-3.97-1.94-3.98 0 0-3.85 4.66-6.67 10.8 0 0-.03.08.02.13l.04.01h.06c1.06-.53 5.46-2.77 7.28-4.54 0 0 1.15-.93 1.21-2.42zm1.52 2.14s-6.28 3.37-9.52 5.55c0 0-.05.04-.03.11 0 0 .03.06.07.06 1.16 0 5.56 0 5.67-.02 0 0 .57-.02 1.27-.29 0 0 1.56-.5 2.37-2.27 0 0 .73-1.45.17-3.14z"/></svg>
+        <span class="t"><small>Explore it on</small><b>AppGallery</b></span>
+      </a>
     </div>
-    <div class="trust">📱 iPhone · iPad &nbsp;·&nbsp; 🙅 No sign-up &nbsp;·&nbsp; 🚫 No ads &nbsp;·&nbsp; 🔒 Data stays on your device</div>
+    <p class="store-note">Huawei phones: the AppGallery build is the China release and does not include
+       the AI features (pending a domestic algorithm filing) — everything else is the same.
+       HarmonyOS 4 and Android-based Huawei devices; HarmonyOS NEXT is not supported yet.</p>
+    <div class="trust">📱 iPhone · iPad · Huawei &nbsp;·&nbsp; 🙅 No sign-up &nbsp;·&nbsp; 🚫 No ads &nbsp;·&nbsp; 🔒 Data stays on your device</div>
 
     <div class="preview reveal">
       <div class="pv-head"><span class="pv-dot">🍵</span><span><b>Qingtuan</b><small>Knows your fridge · learns as you chat</small></span></div>
@@ -426,12 +454,10 @@
         <span class="t"><small>Download on the</small><b>App Store</b></span>
       </a>
       <a class="appstore-btn alt" href="https://appgallery.huawei.com/app/C118450373" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v9.17l3.09-3.08 1.41 1.41L12 16l-5.5-5.5 1.41-1.41L11 12.17V3z"/><path d="M4 18h16v2H4z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="hw-mark"><path d="M3.67 6.14S1.82 7.91 1.72 9.78v.35c.08 1.51 1.22 2.4 1.22 2.4 1.83 1.79 6.26 4.04 7.3 4.55 0 0 .06.03.1-.01l.02-.04v-.04C7.52 10.8 3.67 6.14 3.67 6.14zM9.65 18.6c-.02-.08-.1-.08-.1-.08l-7.38.26c.8 1.43 2.15 2.53 3.56 2.2.96-.25 3.16-1.78 3.88-2.3.06-.05.04-.09.04-.09zm.08-.78C6.49 15.63.21 12.28.21 12.28c-.15.46-.2.9-.21 1.3v.07c0 1.07.4 1.82.4 1.82.8 1.69 2.34 2.2 2.34 2.2.7.3 1.4.31 1.4.31.12.02 4.4 0 5.54 0 .05 0 .08-.05.08-.05v-.06c0-.03-.03-.05-.03-.05zM9.06 3.19a3.42 3.42 0 00-2.57 3.15v.41c.03.6.16 1.05.16 1.05.66 2.9 3.86 7.65 4.55 8.65.05.05.1.03.1.03a.1.1 0 00.06-.1c1.06-10.6-1.11-13.42-1.11-13.42-.32.02-1.19.23-1.19.23zm8.299 2.27s-.49-1.8-2.44-2.28c0 0-.57-.14-1.17-.22 0 0-2.18 2.81-1.12 13.43.01.07.06.08.06.08.07.03.1-.03.1-.03.72-1.03 3.9-5.76 4.55-8.64 0 0 .36-1.4.02-2.34zm-2.92 13.07s-.07 0-.09.05c0 0-.01.07.03.1.7.51 2.85 2 3.88 2.3 0 0 .16.05.43.06h.14c.69-.02 1.9-.37 3-2.26l-7.4-.25zm7.83-8.41c.14-2.06-1.94-3.97-1.94-3.98 0 0-3.85 4.66-6.67 10.8 0 0-.03.08.02.13l.04.01h.06c1.06-.53 5.46-2.77 7.28-4.54 0 0 1.15-.93 1.21-2.42zm1.52 2.14s-6.28 3.37-9.52 5.55c0 0-.05.04-.03.11 0 0 .03.06.07.06 1.16 0 5.56 0 5.67-.02 0 0 .57-.02 1.27-.29 0 0 1.56-.5 2.37-2.27 0 0 .73-1.45.17-3.14z"/></svg>
         <span class="t"><small>Get it on</small><b>AppGallery</b></span>
       </a>
     </div>
-    <p class="store-note">Huawei devices: the AppGallery build is the China release and does not include the AI features
-       (pending domestic algorithm filing). HarmonyOS 4 and Android-based Huawei phones only.</p>
     <div class="foot-links"><a href="devlog-en.html">Dev log</a><a href="geo-en.html">AI Knowledge Base</a><a href="privacy-en.html">Privacy</a><a href="terms-en.html">Terms</a><a href="support-en.html">Support</a></div>
     <div class="foot-en">中文：<a href="privacy.html">隐私政策</a> · <a href="terms.html">用户协议</a> · <a href="support.html">技术支持</a></div>
     <div class="copyright">Chihaofan · Qingtuan helps you eat well 🍚<br>Contact: <a href="mailto:blake.chen94@gmail.com">blake.chen94@gmail.com</a></div>
@@ -459,6 +485,8 @@
     <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
     Get it on the App Store
   </a>
+  <a class="pet-cta alt" href="https://appgallery.huawei.com/app/C118450373" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" class="hw-mark"><path d="M3.67 6.14S1.82 7.91 1.72 9.78v.35c.08 1.51 1.22 2.4 1.22 2.4 1.83 1.79 6.26 4.04 7.3 4.55 0 0 .06.03.1-.01l.02-.04v-.04C7.52 10.8 3.67 6.14 3.67 6.14zM9.65 18.6c-.02-.08-.1-.08-.1-.08l-7.38.26c.8 1.43 2.15 2.53 3.56 2.2.96-.25 3.16-1.78 3.88-2.3.06-.05.04-.09.04-.09zm.08-.78C6.49 15.63.21 12.28.21 12.28c-.15.46-.2.9-.21 1.3v.07c0 1.07.4 1.82.4 1.82.8 1.69 2.34 2.2 2.34 2.2.7.3 1.4.31 1.4.31.12.02 4.4 0 5.54 0 .05 0 .08-.05.08-.05v-.06c0-.03-.03-.05-.03-.05zM9.06 3.19a3.42 3.42 0 00-2.57 3.15v.41c.03.6.16 1.05.16 1.05.66 2.9 3.86 7.65 4.55 8.65.05.05.1.03.1.03a.1.1 0 00.06-.1c1.06-10.6-1.11-13.42-1.11-13.42-.32.02-1.19.23-1.19.23zm8.299 2.27s-.49-1.8-2.44-2.28c0 0-.57-.14-1.17-.22 0 0-2.18 2.81-1.12 13.43.01.07.06.08.06.08.07.03.1-.03.1-.03.72-1.03 3.9-5.76 4.55-8.64 0 0 .36-1.4.02-2.34zm-2.92 13.07s-.07 0-.09.05c0 0-.01.07.03.1.7.51 2.85 2 3.88 2.3 0 0 .16.05.43.06h.14c.69-.02 1.9-.37 3-2.26l-7.4-.25zm7.83-8.41c.14-2.06-1.94-3.97-1.94-3.98 0 0-3.85 4.66-6.67 10.8 0 0-.03.08.02.13l.04.01h.06c1.06-.53 5.46-2.77 7.28-4.54 0 0 1.15-.93 1.21-2.42zm1.52 2.14s-6.28 3.37-9.52 5.55c0 0-.05.04-.03.11 0 0 .03.06.07.06 1.16 0 5.56 0 5.67-.02 0 0 .57-.02 1.27-.29 0 0 1.56-.5 2.37-2.27 0 0 .73-1.45.17-3.14z"/></svg>AppGallery</a>
+  <p class="pet-hw-note">China release, without the AI features</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js" defer></script>

@@ -181,6 +181,19 @@ footer { border-top: 1px solid var(--line); padding: 48px 0 80px; text-align: ce
 .appstore-btn .t { text-align: left; line-height: 1.15; }
 .appstore-btn .t small { display: block; font-size: 10.5px; opacity: .82; font-weight: 500; }
 .appstore-btn .t b { font-size: 18px; font-weight: 700; }
+
+/* 次级商店按钮（华为应用市场）：描边款，不跟 App Store 抢主 CTA 的视觉重量。
+   changelog.html 用的是本文件，不是首页那份内联样式（2026-08-17：往
+   changelog.html 里塞 <style> 没生效就是因为这个，它没有内联 style 块）。 */
+.appstore-btn.alt { background: var(--card); color: var(--ink) !important; border: 1.5px solid var(--line); box-shadow: none; }
+.appstore-btn.alt:hover { border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); }
+
+/* 华为 logo 用品牌红。fill 写在 path 上而不是 svg 上——上面
+   `.appstore-btn svg { fill: currentColor }` 只作用于 svg 元素，path 是继承来的，
+   而 path 上的直接声明永远赢过继承值，不用跟容器比特异性。 */
+.hw-mark path { fill: #CF0A2C; }
+:root[data-theme="dark"] .hw-mark path { fill: #F0334F; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hw-mark path { fill: #F0334F; } }
 .foot-links { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; margin-bottom: 14px; }
 .foot-links a { font-size: 14.5px; font-weight: 700; }
 .copyright { font-size: 12.5px; line-height: 1.9; }
