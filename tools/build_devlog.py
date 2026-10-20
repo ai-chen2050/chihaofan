@@ -364,6 +364,67 @@ def chrome(lang, in_sub):
     return nav, footer
 
 
+GA4_ID = "G-1CQNQNPK1Y"
+BA_ID = "b3a7b6fedcba22d39897693d6f716035"
+GA4_SNIPPET = f"""<!-- Google tag (gtag.js) + Baidu Tongji + SPA route tracker -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA4_ID}');
+</script>
+<script>
+  window._hmt = window._hmt || [];
+  (function() {{
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?{BA_ID}";
+    hm.async = true;
+    var s = document.getElementsByTagName("script")[0];
+    if (s && s.parentNode) s.parentNode.insertBefore(hm, s);
+    else document.head.appendChild(hm);
+  }})();
+</script>
+<script>
+  (function(){{
+    var lastPath = location.pathname + location.search + location.hash;
+    function trackPageView(){{
+      var curPath = location.pathname + location.search + location.hash;
+      if (curPath === lastPath) return;
+      lastPath = curPath;
+      if (typeof window.gtag === "function") {{
+        window.gtag('event', 'page_view', {{
+          page_path: curPath,
+          page_location: location.href,
+          page_title: document.title
+        }});
+      }}
+      if (Array.isArray(window._hmt)) {{
+        window._hmt.push(['_trackPageview', curPath]);
+      }}
+    }}
+    var origPush = history.pushState;
+    if (origPush) {{
+      history.pushState = function(){{
+        var ret = origPush.apply(this, arguments);
+        trackPageView();
+        return ret;
+      }};
+    }}
+    var origReplace = history.replaceState;
+    if (origReplace) {{
+      history.replaceState = function(){{
+        var ret = origReplace.apply(this, arguments);
+        trackPageView();
+        return ret;
+      }};
+    }}
+    window.addEventListener('popstate', trackPageView);
+    window.addEventListener('hashchange', trackPageView);
+  }})();
+</script>"""
+
+
 def page(lang, in_sub, title, desc, body, canonical_extra=""):
     t = STR[lang]
     up = "../" if in_sub else ""
@@ -383,6 +444,7 @@ def page(lang, in_sub, title, desc, body, canonical_extra=""):
 <meta name="twitter:card" content="summary">{canonical_extra}
 <script>(function(){{try{{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}}})();</script>
 <link rel="stylesheet" href="{up}devlog.css">
+{GA4_SNIPPET}
 </head>
 <body>
 <div class="scroll-prog" id="prog"></div>
@@ -544,6 +606,28 @@ def build():
         with open(os.path.join(ROOT, fn), "w", encoding="utf-8") as f:
             f.write(page(lang, False, t["index_title"], t["index_lead"], body))
         print("  ✓ %s（%d 篇）" % (fn, len(items)))
+
+    # 确保根目录所有静态 HTML 页面同样包含 GA4 + 百度统计 + SPA 路由上报代码
+    for fn in sorted(os.listdir(ROOT)):
+        if not fn.endswith(".html"):
+            continue
+        p = os.path.join(ROOT, fn)
+        with open(p, encoding="utf-8") as f:
+            content = f.read()
+        # 如果仅有旧版单 GA4 块，先替换为 GA4 + 百度双引擎块
+        content_new = re.sub(
+            r"<!-- Google tag \(gtag\.js\)[^\n]*-->.*?(?=\n</head>)",
+            lambda _: GA4_SNIPPET,
+            content,
+            count=1,
+            flags=re.S,
+        )
+        if f"hm.baidu.com/hm.js?{BA_ID}" not in content_new and "</head>" in content_new:
+            content_new = content_new.replace("</head>", f"{GA4_SNIPPET}\n</head>", 1)
+        if content_new != content:
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(content_new)
+            print("  ✓ %s（注入 GA4 + 百度统计 + SPA 路由追踪）" % fn)
 
     return 0
 

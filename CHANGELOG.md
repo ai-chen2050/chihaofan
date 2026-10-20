@@ -2,7 +2,13 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
-## [Unreleased] - 2026-08-17
+## [Unreleased] - 2026-10-20
+
+### Added
+- **Google Analytics 4 (`G-1CQNQNPK1Y`) + Baidu Tongji (`b3a7b6fedcba22d39897693d6f716035`) Full-Site & SPA Route Tracking**:
+  - Updated `tools/build_devlog.py` and injected both `G-1CQNQNPK1Y` (`gtag.js`) and `b3a7b6fedcba22d39897693d6f716035` (`hm.baidu.com/hm.js`) snippets plus History API / `hashchange` `page_view` & `_trackPageview` route tracking into all 21 HTML pages across the repository (`index.html`, `index-en.html`, `geo.html`, `geo-en.html`, `privacy.html`, `privacy-en.html`, `support.html`, `support-en.html`, `terms.html`, `terms-en.html`, `changelog.html`, `devlog.html`, `devlog-en.html`, and all 8 `devlog/*.html` articles) so traffic under `https://ai-chen2050.github.io/chihaofan/` is accurately reported.
+
+## [1.2.0] - 2026-08-17
 
 ### Added
 - **Huawei AppGallery download** (`https://appgallery.huawei.com/app/C118450373`):
