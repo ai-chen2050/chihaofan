@@ -1,0 +1,674 @@
+/* ==========================================================================
+   吃好饭 (Chihaofan) · 企业级官网样式系统 (Enterprise Design System v2.0)
+   保留吃好饭标志性「翠绿/薄荷绿」品牌色盘 (--brand: #10c877 / #2ee6a0)，
+   融合企业级高对比度双模、互动沙盘、白盒推理终端、3D 地球仪与三温区恒温舱。
+   ========================================================================== */
+
+:root {
+  --bg: #f8fffb;
+  --bg2: #edfdf5;
+  --bg3: #def9ec;
+  --ink: #06251a;
+  --sub: #3e6354;
+  --muted: #698d7e;
+  --card: #ffffff;
+  --card-hover: #f3fef8;
+  --line: #d4ece0;
+  --line-strong: #b5dec9;
+  --brand: #10c877;
+  --brand2: #06c0d6;
+  --brand3: #86e00f;
+  --brand-deep: #059b5c;
+  --brand-glow: rgba(16, 200, 119, 0.22);
+  --amber: #f59e0b;
+  --danger: #ef4444;
+  --grad: linear-gradient(105deg, #0ec877 0%, #07c4dc 54%, #82dc14 100%);
+  --shadow: 0 14px 40px rgba(8, 72, 48, 0.09);
+  --shadow-lg: 0 28px 68px rgba(8, 72, 48, 0.16);
+  --glass: rgba(255, 255, 255, 0.78);
+  --glass-line: rgba(16, 200, 119, 0.20);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --maxw: 1140px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #040d09;
+    --bg2: #07150f;
+    --bg3: #0c2118;
+    --ink: #e8faf1;
+    --sub: #95baa9;
+    --muted: #648979;
+    --card: #0a1b13;
+    --card-hover: #0f261b;
+    --line: rgba(46, 230, 160, 0.14);
+    --line-strong: rgba(46, 230, 160, 0.28);
+    --brand: #2ee6a0;
+    --brand2: #2bd3f0;
+    --brand3: #a9e838;
+    --brand-deep: #2ee6a0;
+    --brand-glow: rgba(46, 230, 160, 0.22);
+    --shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 30px 76px rgba(0, 0, 0, 0.72);
+    --glass: rgba(10, 27, 19, 0.78);
+    --glass-line: rgba(46, 230, 160, 0.18);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #040d09;
+  --bg2: #07150f;
+  --bg3: #0c2118;
+  --ink: #e8faf1;
+  --sub: #95baa9;
+  --muted: #648979;
+  --card: #0a1b13;
+  --card-hover: #0f261b;
+  --line: rgba(46, 230, 160, 0.14);
+  --line-strong: rgba(46, 230, 160, 0.28);
+  --brand: #2ee6a0;
+  --brand2: #2bd3f0;
+  --brand3: #a9e838;
+  --brand-deep: #2ee6a0;
+  --brand-glow: rgba(46, 230, 160, 0.22);
+  --shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 30px 76px rgba(0, 0, 0, 0.72);
+  --glass: rgba(10, 27, 19, 0.78);
+  --glass-line: rgba(46, 230, 160, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: var(--brand-deep); text-decoration: none; transition: color .2s ease; }
+a:hover { color: var(--brand); }
+img { max-width: 100%; height: auto; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+section { padding: 88px 0; position: relative; }
+
+/* 滚动进度条 */
+.scroll-prog {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 99;
+  background: var(--grad); box-shadow: 0 0 12px var(--brand);
+}
+
+/* 顶部企业级毛玻璃导航 */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(1.8) blur(18px);
+  -webkit-backdrop-filter: saturate(1.8) blur(18px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; gap: 14px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 900; font-size: 17px; color: var(--ink);
+  letter-spacing: -0.3px; white-space: nowrap; flex-shrink: 0;
+}
+.brand img { width: 34px; height: 34px; border-radius: 9px; box-shadow: 0 4px 12px var(--brand-glow); }
+.brand-badge {
+  font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+  color: var(--brand-deep); border: 1px solid color-mix(in srgb, var(--brand) 34%, transparent);
+}
+.nav-links {
+  display: flex; align-items: center; gap: 15px; flex-wrap: nowrap;
+}
+.nav-links a:not(.nav-cta) {
+  font-size: 13.5px; color: var(--sub); font-weight: 600; white-space: nowrap;
+}
+.nav-links a:not(.nav-cta):hover { color: var(--brand-deep); }
+.theme-btn {
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); font-size: 13px; font-weight: 800;
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .2s ease, border-color .2s ease; flex-shrink: 0;
+}
+.theme-btn:hover { transform: scale(1.07); border-color: var(--brand); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ink); color: var(--bg) !important;
+  padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  white-space: nowrap; flex-shrink: 0; transition: transform .2s ease, opacity .2s ease;
+}
+.nav-cta:hover { transform: translateY(-1px); opacity: .92; }
+.nav-cta svg { width: 13px; height: 13px; fill: currentColor; }
+.nav-cta.hw {
+  background: transparent; color: var(--ink) !important;
+  border: 1.5px solid var(--line-strong); padding: 6px 12px;
+}
+.nav-cta.hw:hover { border-color: var(--brand); color: var(--brand-deep) !important; }
+.nav-cta.hw svg { width: 14px; height: 14px; }
+
+/* 华为八花瓣品牌红（path 直接声明胜出所有继承） */
+.hw-mark path { fill: #CF0A2C; }
+:root[data-theme="dark"] .hw-mark path { fill: #F0334F; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hw-mark path { fill: #F0334F; } }
+
+/* ── Hero 区域 ── */
+.hero {
+  position: relative; overflow: hidden; padding: 84px 0 72px; text-align: center;
+  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 68%);
+}
+#heroCanvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.75;
+}
+.hero .wrap { position: relative; z-index: 2; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--line-strong);
+  font-size: 12.5px; font-weight: 700; color: var(--brand-deep);
+  box-shadow: var(--shadow); margin-bottom: 22px; backdrop-filter: blur(10px);
+}
+.app-badge {
+  position: relative; width: 104px; height: 104px; margin: 0 auto 20px; display: block;
+}
+.app-badge img {
+  width: 104px; height: 104px; border-radius: 24px;
+  box-shadow: 0 20px 48px rgba(10, 80, 55, 0.26); position: relative; z-index: 1;
+}
+.app-badge .ring {
+  position: absolute; inset: -6px; border-radius: 30px;
+  background: var(--grad); opacity: .45; filter: blur(12px);
+  animation: pulseRing 3.6s ease-in-out infinite;
+}
+@keyframes pulseRing { 0%, 100% { transform: scale(.96); opacity: .38; } 50% { transform: scale(1.06); opacity: .68; } }
+
+.grad-text {
+  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero h1 {
+  font-size: clamp(38px, 6.2vw, 66px); font-weight: 900;
+  letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 10px;
+}
+.hero .tag {
+  font-size: clamp(19px, 3vw, 27px); font-weight: 800; margin-bottom: 16px;
+}
+.hero .pitch {
+  font-size: clamp(15.5px, 1.8vw, 18px); color: var(--sub);
+  max-width: 720px; margin: 0 auto 28px;
+}
+.cta-row {
+  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+}
+.appstore-btn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--ink); color: var(--bg) !important;
+  padding: 13px 26px; border-radius: 16px; box-shadow: var(--shadow-lg);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.appstore-btn:hover { transform: translateY(-3px); }
+.appstore-btn svg { width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
+.appstore-btn .t { text-align: left; line-height: 1.18; }
+.appstore-btn .t small { display: block; font-size: 11px; opacity: .78; font-weight: 600; }
+.appstore-btn .t b { font-size: 16px; font-weight: 800; }
+.appstore-btn.alt {
+  background: var(--card); color: var(--ink) !important;
+  border: 1.5px solid var(--line-strong); box-shadow: var(--shadow);
+}
+.appstore-btn.alt:hover { border-color: var(--brand); }
+.store-note {
+  max-width: 620px; margin: 14px auto 0; font-size: 12px; line-height: 1.55; color: var(--muted);
+}
+.trust-badges {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  margin-top: 22px;
+}
+.trust-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 700;
+  background: var(--card); border: 1px solid var(--line); color: var(--sub);
+}
+
+/* ── 章节通用标题 ── */
+.sec-head { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+.sec-kicker {
+  display: inline-block; font-size: 12px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.4px; color: var(--brand-deep);
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 10px;
+}
+.sec-title {
+  font-size: clamp(26px, 4vw, 40px); font-weight: 900;
+  letter-spacing: -0.8px; line-height: 1.18; color: var(--ink);
+}
+.sec-sub {
+  font-size: 16px; color: var(--sub); margin-top: 10px;
+}
+
+/* ── 互动沙盘通用框架 (Enterprise Playground Layout) ── */
+.playground-sec {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.pg-shell {
+  display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 24px; align-items: stretch;
+}
+.pg-window {
+  background: var(--card); border: 1px solid var(--line-strong);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.pg-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px; background: var(--bg2); border-bottom: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 700; color: var(--sub);
+}
+.pg-dots { display: flex; gap: 6px; }
+.pg-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--line-strong); }
+.pg-dots span:nth-child(1) { background: #ff5f57; }
+.pg-dots span:nth-child(2) { background: #febc2e; }
+.pg-dots span:nth-child(3) { background: #28c840; }
+.pg-body { padding: 22px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+/* 按钮组/切换器 */
+.seg-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.seg-btn {
+  padding: 8px 14px; border-radius: 11px; border: 1px solid var(--line);
+  background: var(--bg2); color: var(--sub); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; gap: 6px;
+}
+.seg-btn:hover { border-color: var(--brand); color: var(--ink); }
+.seg-btn.active {
+  background: var(--brand); color: #042014; border-color: var(--brand);
+  box-shadow: 0 6px 18px var(--brand-glow);
+}
+
+/* ── 沙盘 1：3D 拟真三温区冰箱与冰箱贴定制 ── */
+.fridge-stage {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch;
+}
+.fridge-cabinet {
+  background: linear-gradient(155deg, var(--bg2), var(--bg3));
+  border: 2px solid var(--line-strong); border-radius: 18px; padding: 16px;
+  position: relative; display: flex; flex-direction: column; gap: 10px;
+  box-shadow: inset 0 2px 12px rgba(16, 200, 119, 0.08);
+}
+.fridge-door-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; font-weight: 800; color: var(--brand-deep);
+  padding-bottom: 8px; border-bottom: 1px dashed var(--line-strong);
+}
+.magnet-strip {
+  display: flex; gap: 8px; flex-wrap: wrap; min-height: 36px; align-items: center;
+}
+.magnet-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  background: var(--card); border: 1px solid var(--line-strong);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06); cursor: pointer;
+  transition: transform .18s ease;
+}
+.magnet-chip:hover { transform: scale(1.08) rotate(-2deg); }
+.shelf-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+.food-cell {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px; display: flex; align-items: center; gap: 9px;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.food-cell:hover { transform: translateY(-2px); border-color: var(--brand); }
+.food-cell .emo { font-size: 22px; }
+.food-cell .meta { flex: 1; min-width: 0; }
+.food-cell .meta b { display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.food-cell .meta small { font-size: 11px; font-weight: 700; }
+.tag-fresh { color: var(--brand-deep); }
+.tag-soon { color: var(--amber); }
+
+.thermo-panel {
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+}
+.temp-readout {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line);
+}
+.temp-readout .deg {
+  font-size: 30px; font-weight: 900; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--brand-deep);
+}
+.telemetry-list { display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; }
+.telemetry-row {
+  display: flex; justify-content: space-between; padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.telemetry-row span { color: var(--sub); }
+.telemetry-row b { color: var(--ink); }
+
+/* ── 沙盘 2：白盒 AI 3 秒配餐终端 + 10 大专业脑组件 ── */
+.reasoning-box {
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+}
+.reasoning-step {
+  display: flex; align-items: center; gap: 10px; padding: 6px 0;
+  font-size: 13px; color: var(--sub);
+}
+.reasoning-step .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--brand);
+  box-shadow: 0 0 8px var(--brand); flex-shrink: 0;
+}
+.meal-result-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 10%, var(--card)), var(--card));
+  border: 1px solid var(--line-strong); border-radius: 16px; padding: 18px;
+}
+.meal-dishes {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px;
+}
+.dish-pill {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px; text-align: center;
+}
+.dish-pill .emo { font-size: 22px; display: block; margin-bottom: 4px; }
+.dish-pill b { font-size: 13px; display: block; }
+.dish-pill small { font-size: 11px; color: var(--sub); }
+
+/* ── 沙盘 3：3D 环球寻味地球仪与 5 款小红书旅拍海报 ── */
+.globe-stage {
+  position: relative; background: radial-gradient(circle at 50% 50%, #09281c, #04100b);
+  border-radius: 18px; overflow: hidden; min-height: 340px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(46, 230, 160, 0.25);
+}
+#globeCanvas {
+  width: 100%; height: 340px; display: block; cursor: grab;
+}
+#globeCanvas:active { cursor: grabbing; }
+.globe-hud {
+  position: absolute; bottom: 12px; left: 12px; right: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; border-radius: 12px;
+  background: rgba(4, 16, 11, 0.76); backdrop-filter: blur(10px);
+  border: 1px solid rgba(46, 230, 160, 0.24); color: #e8faf1; font-size: 12px;
+}
+.poster-card {
+  border-radius: 16px; padding: 20px; border: 1px solid var(--line-strong);
+  background: var(--card); display: flex; flex-direction: column; justify-content: space-between;
+  gap: 14px; transition: all .28s ease; position: relative; overflow: hidden;
+}
+.poster-preview {
+  border-radius: 14px; padding: 18px; color: #fff; min-height: 180px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.22);
+}
+.poster-stickers {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+}
+.sticker-diecut {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.92);
+  color: #06251a; font-size: 12px; font-weight: 800;
+  border: 2px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+  cursor: pointer; user-select: none; transition: transform .15s ease;
+}
+.sticker-diecut:hover { transform: scale(1.1) rotate(3deg); }
+
+/* ── 6 大核心能力网格 ── */
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.feat {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 26px 24px; box-shadow: var(--shadow); cursor: pointer;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.feat:hover {
+  transform: translateY(-5px); border-color: var(--brand); box-shadow: var(--shadow-lg);
+}
+.feat .ic {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 16px;
+}
+.feat h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--ink); }
+.feat p { font-size: 14.5px; color: var(--sub); line-height: 1.65; }
+.feat .see {
+  margin-top: 16px; font-size: 12.5px; font-weight: 800; color: var(--brand-deep);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+
+/* ── 脑组件跑马灯 ── */
+.skills { background: var(--bg2); overflow: hidden; }
+.marquee { display: flex; flex-direction: column; gap: 14px; margin: 12px 0 20px; overflow: hidden; }
+.track { display: flex; gap: 12px; width: max-content; animation: scrollLeft 34s linear infinite; }
+.track.rev { animation-direction: reverse; animation-duration: 38s; }
+@keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.stag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line-strong); font-size: 14px; font-weight: 700;
+  color: var(--ink); box-shadow: var(--shadow); white-space: nowrap;
+}
+.stag.free {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 12%, var(--card));
+}
+
+/* ── 截图画廊 + 灯箱 ── */
+.shots { overflow: hidden; }
+.shots-strip {
+  display: flex; gap: 20px; overflow-x: auto; padding: 10px 24px 28px;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+}
+@media (min-width: 980px) { .shots-strip { justify-content: center; } }
+.shot-card {
+  flex: none; width: 212px; scroll-snap-align: center; cursor: zoom-in;
+  border-radius: 22px; overflow: hidden; box-shadow: var(--shadow);
+  border: 1px solid var(--line); background: var(--card);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.shot-card:hover { transform: translateY(-7px) scale(1.02); box-shadow: var(--shadow-lg); }
+.shot-card img { display: block; width: 100%; height: auto; }
+
+.lb {
+  position: fixed; inset: 0; z-index: 95; display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 16, 11, 0.84); backdrop-filter: blur(12px);
+  opacity: 0; visibility: hidden; transition: opacity .26s ease; padding: 24px;
+}
+.lb.open { opacity: 1; visibility: visible; }
+.lb img {
+  max-width: min(92vw, 410px); max-height: 86vh; border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+}
+.lb-close {
+  position: absolute; top: 18px; right: 24px; font-size: 34px; color: #fff; cursor: pointer;
+}
+.lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 48px; border: none; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16); color: #fff; font-size: 28px; cursor: pointer;
+}
+.lb-nav.prev { left: 18px; }
+.lb-nav.next { right: 18px; }
+
+/* ── 企业级 7 维横向对比矩阵 ── */
+.cmp-wrap {
+  overflow-x: auto; background: var(--card); border: 1px solid var(--line-strong);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.cmp-table {
+  width: 100%; border-collapse: collapse; font-size: 14.5px; text-align: left;
+}
+.cmp-table th, .cmp-table td {
+  padding: 16px 20px; border-bottom: 1px solid var(--line);
+}
+.cmp-table th {
+  background: var(--bg2); font-weight: 800; color: var(--ink);
+}
+.cmp-table th.hl, .cmp-table td.hl {
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  font-weight: 700;
+}
+.cmp-table tr:last-child td { border-bottom: none; }
+
+/* ── 企业级三档透明定价矩阵 (Free / Pro Lifetime / Pro Subscription) ── */
+.billing-switch-wrap {
+  display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 34px;
+}
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch;
+}
+.price-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 30px 26px; box-shadow: var(--shadow); display: flex; flex-direction: column;
+  justify-content: space-between; position: relative; transition: transform .22s ease;
+}
+.price-card:hover { transform: translateY(-4px); }
+.price-card.featured {
+  border: 2px solid var(--brand);
+  box-shadow: 0 24px 60px var(--brand-glow);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 8%, var(--card)), var(--card));
+}
+.pop-badge {
+  position: absolute; top: -13px; right: 22px;
+  background: var(--grad); color: #042014; font-size: 11.5px; font-weight: 900;
+  padding: 4px 12px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.price-tier { font-size: 18px; font-weight: 900; color: var(--ink); margin-bottom: 6px; }
+.price-desc { font-size: 13.5px; color: var(--sub); margin-bottom: 18px; }
+.price-val {
+  font-size: 38px; font-weight: 900; color: var(--ink); letter-spacing: -1px;
+  margin-bottom: 18px; display: flex; align-items: baseline; gap: 6px;
+}
+.price-val small { font-size: 14px; font-weight: 600; color: var(--sub); letter-spacing: 0; }
+.price-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.price-list li {
+  font-size: 14px; color: var(--sub); display: flex; align-items: flex-start; gap: 8px;
+}
+.price-list li::before {
+  content: "✓"; color: var(--brand-deep); font-weight: 900; flex-shrink: 0;
+}
+.price-btn {
+  display: block; text-align: center; padding: 13px 18px; border-radius: 14px;
+  font-size: 14.5px; font-weight: 800; border: 1.5px solid var(--line-strong);
+  color: var(--ink); background: var(--bg2); transition: all .2s ease;
+}
+.price-card.featured .price-btn {
+  background: var(--brand); color: #042014; border-color: var(--brand);
+}
+.price-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.pricing-trust-bar {
+  margin-top: 26px; padding: 16px 22px; border-radius: 16px;
+  background: var(--bg2); border: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 22px;
+  font-size: 13px; font-weight: 700; color: var(--sub);
+}
+
+/* ── FAQ 手风琴 ── */
+.faq-list { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 18px 22px; box-shadow: var(--shadow);
+}
+.faq-item summary {
+  font-size: 16px; font-weight: 800; color: var(--ink); cursor: pointer;
+  list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; font-size: 20px; font-weight: 700; color: var(--brand-deep);
+}
+.faq-item[open] summary::after { content: "−"; }
+.faq-item p { margin-top: 12px; font-size: 14.5px; color: var(--sub); line-height: 1.7; }
+
+/* ── 隐私卡片与页脚 ── */
+.privacy-banner {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 14%, var(--card)), var(--card));
+  border: 1px solid var(--line-strong); border-radius: 26px;
+  padding: 44px 36px; text-align: center; box-shadow: var(--shadow-lg);
+}
+.privacy-banner h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; margin-bottom: 12px; }
+.privacy-banner p { max-width: 680px; margin: 0 auto 22px; color: var(--sub); font-size: 15.5px; }
+.pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.pill {
+  padding: 8px 16px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line-strong); font-size: 13.5px; font-weight: 700; color: var(--ink);
+}
+
+footer {
+  border-top: 1px solid var(--line); padding: 54px 0 44px; text-align: center;
+  background: var(--bg2); color: var(--sub); font-size: 13.5px;
+}
+.foot-store { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+.foot-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; font-weight: 700; }
+.foot-links a { color: var(--ink); }
+.foot-en { margin-bottom: 12px; font-size: 12.5px; color: var(--muted); }
+.copyright { color: var(--muted); line-height: 1.7; }
+
+/* ── 漫游青团团 Lottie 桌宠 ── */
+#pet {
+  position: fixed; left: 24px; bottom: 20px; width: 122px; height: 122px; z-index: 60;
+  cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none;
+  transition: left 3s cubic-bezier(.4,.05,.4,1), top 3s cubic-bezier(.4,.05,.4,1);
+  will-change: left, top;
+}
+#pet.dragging { cursor: grabbing; transition: none; }
+#pet .pet-anim, #pet .pet-fallback { width: 100%; height: 100%; pointer-events: none; }
+#pet .pet-anim { transition: transform .2s ease; filter: drop-shadow(0 8px 14px rgba(10,80,55,.28)); }
+#pet.flip .pet-anim { transform: scaleX(-1); }
+#pet .pet-fallback { border-radius: 24px; box-shadow: var(--shadow); display: none; }
+#pet .pet-hint {
+  position: absolute; top: -8px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  font-size: 11px; font-weight: 800; color: #04180f; background: var(--brand3);
+  padding: 3px 10px; border-radius: 999px; box-shadow: var(--shadow);
+  animation: bob 1.6s ease-in-out infinite;
+}
+@keyframes bob { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
+.pet-bubble {
+  position: fixed; z-index: 61; max-width: 268px; background: var(--glass);
+  border: 1px solid var(--line-strong); border-radius: 18px; padding: 15px 16px 14px;
+  box-shadow: var(--shadow-lg); backdrop-filter: blur(16px);
+  opacity: 0; transform: translateY(8px) scale(.96);
+  transition: opacity .25s ease, transform .25s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+.pet-bubble.show { opacity: 1; transform: none; pointer-events: auto; }
+.pet-bubble p { font-size: 13.5px; color: var(--ink); margin-bottom: 12px; }
+.pet-bubble .pet-cta {
+  display: inline-flex; align-items: center; gap: 7px; width: 100%; justify-content: center;
+  background: var(--ink); color: var(--bg) !important; padding: 10px 14px;
+  border-radius: 12px; font-size: 13.5px; font-weight: 700;
+}
+.pet-bubble .pet-cta svg { width: 14px; height: 14px; fill: currentColor; }
+.pet-bubble .pet-cta.alt {
+  background: transparent; color: var(--ink) !important;
+  border: 1.5px solid var(--line-strong); margin-top: 8px;
+}
+.pet-hw-note { margin: 8px 0 0; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.pet-bubble .pet-close {
+  position: absolute; top: 8px; right: 10px; font-size: 16px; color: var(--sub); cursor: pointer;
+}
+
+/* ── 响应式适配 ── */
+@media (max-width: 960px) {
+  .pg-shell, .fridge-stage, .grid, .pricing-grid { grid-template-columns: 1fr; }
+  .meal-dishes { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  section { padding: 64px 0; }
+  .hero { padding: 68px 0 56px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links { gap: 8px; }
+  #pet { width: 104px; height: 104px; }
+}

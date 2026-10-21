@@ -2,6 +2,35 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.2.6] - 2026-10-21
+
+### Added
+- **Enterprise-Grade Website Redesign (v2.0)**:
+  - **Shared Enterprise Stylesheet (`style.css`) & Interactive Engine (`app.js`)**: Designed to match the architectural standard of top-tier product websites (modeled after `fulibiji`), preserving Chihaofan's signature emerald/mint palette (`--brand: #10c877` / `#2ee6a0`) with high-contrast dual dark/light modes.
+  - **Interactive Playground 1 (3D Tri-Zone Smart Fridge & Thermostat)**:
+    - Interactive 3-zone switcher: `冷藏鲜活舱 (+4°C)`, `微冻软切舱 (-3°C)`, `深冷速冻舱 (-18°C)`.
+    - Real-time live telemetry: live temperature readout, relative humidity (`86% RH`), energy consumption (`0.32 kWh/d`), and shelf-life expiry alerts.
+    - Interactive magnetic door bar with collectible city stickers.
+  - **Interactive Playground 2 (AI 3-Second Meal Engine & 10 Expert Brain Modules)**:
+    - Interactive scenarios: `减脂控卡`, `低 GI 控糖`, `剩菜改造 (免费)`, `孕期/月子营养`.
+    - White-box reasoning chain console showcasing stock expiry priority, budget constraints, allergy filters, and automatic push to missing shopping lists.
+  - **Interactive Playground 3 (3D World Culinary Globe & 8K Living Scene Theater)**:
+    - Real HTML5 Canvas 3D rotating globe featuring 19 countries and 37+ gastronomic cities (Tokyo, Paris, Bangkok, Rome, Chengdu).
+    - 5 Xiaohongshu 9:16 travel poster styles with interactive die-cut city food stickers.
+  - **Interactive Ecosystem**:
+    - Showcase for Qingtuan arcade whack-a-mole mini-game with 5-heart capacity and revive perks.
+    - iOS home screen interactive widgets and Siri / App Shortcuts.
+  - **Enterprise 7-Axis Comparison Matrix**:
+    - Comprehensive side-by-side comparison table between Chihaofan, traditional recipe apps, and cloud trackers across privacy, AI algorithm, 3D fridge, world tour, brain modules, iOS widgets, and pricing.
+  - **Multi-Tier Transparent Pricing Grid (`#pricing`)**:
+    - Free Forever (`¥0` / `$0`), Pro Lifetime (`¥128` / `$19.99` one-time buy), and Pro Subscription (`¥68/yr` / `$9.99/yr` or `¥9.9/mo` / `$1.49/mo`) with billing cycle switcher.
+  - **Full Bilingual Parity**:
+    - Updated `index.html` (Chinese) and `index-en.html` (native idiomatic English).
+    - Updated `geo.html` & `geo-en.html` GEO knowledge bases.
+    - Updated `llms.txt` & `llms-full.txt` documentation for AI search crawlers.
+  - **Analytics Integrity**:
+    - Maintained Google Analytics 4 (`G-1CQNQNPK1Y`), Baidu Tongji (`b3a7b6fedcba22d39897693d6f716035`), and SPA route-tracking scripts.
+
 ## [Unreleased] - 2026-10-20
 
 ### Added
