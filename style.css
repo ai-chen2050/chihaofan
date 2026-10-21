@@ -1,7 +1,7 @@
 /* ==========================================================================
    吃好饭 (Chihaofan) · 企业级官网样式系统 (Enterprise Design System v2.0)
    保留吃好饭标志性「翠绿/薄荷绿」品牌色盘 (--brand: #10c877 / #2ee6a0)，
-   融合企业级高对比度双模、互动沙盘、白盒推理终端、3D 地球仪与三温区恒温舱。
+   融合企业级高对比度双模、互动沙盘、智能配餐终端、3D 地球仪与三温区恒温舱。
    ========================================================================== */
 
 :root {
@@ -22,7 +22,7 @@
   --brand-glow: rgba(16, 200, 119, 0.22);
   --amber: #f59e0b;
   --danger: #ef4444;
-  --grad: linear-gradient(105deg, #0ec877 0%, #07c4dc 54%, #82dc14 100%);
+  --grad: linear-gradient(100deg, #0ba35f 0%, #10c877 20%, #3bf09e 42%, #06c0d6 65%, #7ed90b 85%, #0ba35f 100%);
   --shadow: 0 14px 40px rgba(8, 72, 48, 0.09);
   --shadow-lg: 0 28px 68px rgba(8, 72, 48, 0.16);
   --glass: rgba(255, 255, 255, 0.78);
@@ -49,6 +49,7 @@
     --brand3: #a9e838;
     --brand-deep: #2ee6a0;
     --brand-glow: rgba(46, 230, 160, 0.22);
+    --grad: linear-gradient(100deg, #1cb87a 0%, #2ee6a0 20%, #68ffd0 42%, #2bd3f0 65%, #a9e838 85%, #1cb87a 100%);
     --shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
     --shadow-lg: 0 30px 76px rgba(0, 0, 0, 0.72);
     --glass: rgba(10, 27, 19, 0.78);
@@ -72,6 +73,7 @@
   --brand3: #a9e838;
   --brand-deep: #2ee6a0;
   --brand-glow: rgba(46, 230, 160, 0.22);
+  --grad: linear-gradient(100deg, #1cb87a 0%, #2ee6a0 20%, #68ffd0 42%, #2bd3f0 65%, #a9e838 85%, #1cb87a 100%);
   --shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
   --shadow-lg: 0 30px 76px rgba(0, 0, 0, 0.72);
   --glass: rgba(10, 27, 19, 0.78);
@@ -190,8 +192,16 @@ nav .wrap {
 @keyframes pulseRing { 0%, 100% { transform: scale(.96); opacity: .38; } 50% { transform: scale(1.06); opacity: .68; } }
 
 .grad-text {
-  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  background-image: var(--grad);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: greenShine 7s linear infinite;
+}
+@keyframes greenShine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 .hero h1 {
   font-size: clamp(38px, 6.2vw, 66px); font-weight: 900;
@@ -355,7 +365,7 @@ nav .wrap {
 .telemetry-row span { color: var(--sub); }
 .telemetry-row b { color: var(--ink); }
 
-/* ── 沙盘 2：白盒 AI 3 秒配餐终端 + 10 大专业脑组件 ── */
+/* ── 沙盘 2：AI 3 秒智能配餐终端 + 10 大专业脑组件 ── */
 .reasoning-box {
   background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
 }
@@ -671,4 +681,11 @@ footer {
   .nav-links a:not(.nav-cta) { display: none; }
   .nav-links { gap: 8px; }
   #pet { width: 104px; height: 104px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grad-text { animation: none !important; background-size: 100% auto; }
+  .app-badge .ring { animation: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  #pet { transition: none !important; }
 }

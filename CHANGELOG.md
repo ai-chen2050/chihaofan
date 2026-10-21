@@ -2,6 +2,17 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.2.7] - 2026-10-21
+
+### Enhanced & Polished
+- **✨ 恢复大标题主题绿光滑过动效 (`style.css`)**:
+  - 为 `.grad-text` 与 Hero 大标题重新引入高质感平滑流光动效：配置 `background-size: 200% auto` 配合 `animation: greenShine 7s linear infinite`，让明亮的薄荷绿与翡翠绿光弧从左至右持续流畅划过“吃好饭”大标题；
+  - 完善深色模式（`data-theme="dark"` / `prefers-color-scheme: dark`）渐变亮度层次，并针对 `prefers-reduced-motion: reduce` 安全优雅降级。
+- **🥬 优化文案心智，告别生硬术语 (`index.html`, `geo.html`, `llms-full.txt`, `app.js`)**:
+  - 全面剔除生硬借用金融工具的“白盒推理链全程可视”等极客模板黑话；
+  - 替换为亲和自然、符合生活场景的用户语言：“**配餐思路看得清清楚楚：优先消灭临期食材 → 贴心避开全家忌口 → 严格把控预算 → 缺少配料自动补入买菜清单**”；
+  - 同步优化 FAQ、功能特性清单与对比矩阵中相应描述，使产品更具生活烟火气与治愈感。
+
 ## [1.2.6] - 2026-10-21
 
 ### Added
