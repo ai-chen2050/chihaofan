@@ -44,6 +44,55 @@
     upd();
   })();
 
+  /* 2.5 官方产品宣传片章节快跳与联动控制 (#promoVideo) */
+  (function () {
+    var vid = document.getElementById('promoVideo');
+    var pills = document.querySelectorAll('.chapter-pill[data-seek]');
+    var watchBtn = document.getElementById('heroWatchBtn');
+    if (!vid) return;
+
+    var times = [];
+    pills.forEach(function (btn, idx) {
+      var t = parseFloat(btn.getAttribute('data-seek')) || 0;
+      times.push({ btn: btn, t: t, idx: idx });
+      btn.addEventListener('click', function () {
+        pills.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        try {
+          vid.currentTime = t;
+          var p = vid.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } catch (e) {}
+      });
+    });
+
+    vid.addEventListener('timeupdate', function () {
+      var cur = vid.currentTime || 0;
+      var activeIdx = 0;
+      for (var i = 0; i < times.length; i++) {
+        if (cur >= times[i].t - 0.25) activeIdx = i;
+      }
+      times.forEach(function (item, idx) {
+        item.btn.classList.toggle('active', idx === activeIdx);
+      });
+    });
+
+    if (watchBtn) {
+      watchBtn.addEventListener('click', function (e) {
+        var sec = document.getElementById('video');
+        if (!sec) return;
+        e.preventDefault();
+        sec.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'center' });
+        setTimeout(function () {
+          try {
+            var p = vid.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+          } catch (_) {}
+        }, 350);
+      });
+    }
+  })();
+
   /* 3. Hero 粒子画布（带可见性生命周期管理） */
   (function () {
     var cvs = document.getElementById('heroCanvas');

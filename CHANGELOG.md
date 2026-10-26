@@ -2,6 +2,15 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.2.8] - 2026-10-26
+
+### Added
+- **🎬 中英双语官方实机产品宣传片剧场 (`promo.mp4`, `promo-en.mp4`, `cover.png`, `cover-en.png`, `index.html`, `index-en.html`, `style.css`, `app.js`)**:
+  - 集成 78 秒 1080p 60fps 中英双版本官方产品宣传片（`promo.mp4` 中文版「吃好饭 · AI冰箱管家与食谱」与 `promo-en.mp4` 英文版「Chi - AI Fridge & Meals」），搭配高点击率海报封面（`cover.png` / `cover-en.png`）与 Pop 05 Chill 轻快生活方式配乐；
+  - 在导航栏与 Hero 首屏新增「观看宣传片 / Watch Promo」快捷入口，点击自动平滑滚动至 `#video` 剧场并启动播放；
+  - 新增 8 大章节时间戳快跳胶囊（`00:00 AI 3秒配餐` → `00:10 双屏联动与跟做` → `00:20 四温区红黄绿看板` → `00:30 3天连排缺口清单` → `00:40 重力天降拟真入仓` → `00:50 3D 地球与巴黎打卡` → `01:00 营养周报与青团养成` → `01:10 品牌终章`），支持点击秒跳与播放进度实时高亮联动；
+  - 同步更新英文版官网导航与首屏品牌名称为 **Chi - AI Fridge & Meals**。
+
 ## [1.2.7] - 2026-10-21
 
 ### Enhanced & Polished
