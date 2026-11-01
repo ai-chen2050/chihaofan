@@ -2,6 +2,12 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.2.9] - 2026-11-01
+
+### Changed
+- **📈 中文品牌标题 ASO/SEO 同步升级 (`index.html`, `geo.html`, `llms.txt`)**:
+  - 将官网中文页面 `<title>`、`og:title`、JSON-LD `SoftwareApplication.name` 及 `llms.txt` 标题同步升级为 **「吃好饭 - AI冰箱食材管家与菜谱」**，补入高商业意图词「食材」与高搜索量词「菜谱」。
+
 ## [1.2.8] - 2026-10-26
 
 ### Added
