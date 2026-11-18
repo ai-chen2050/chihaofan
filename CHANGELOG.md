@@ -2,6 +2,14 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.3.0] - 2026-11-18
+
+### Added
+- **双区售后与用户社群体系 (`index.html`, `support.html`, `index-en.html`, `support-en.html`, `style.css`, `community.json`, `wechat-qr.png`, `telegram-qr.svg`)**:
+  - 中文页面 (`index.html`, `support.html`) 接入开发者个人微信号 `ai-chen2050`、名片二维码 `wechat-qr.png` 及备注「吃好饭」一键复制按钮，严格零 `t.me/` 链接外泄；
+  - 英文页面 (`index-en.html`, `support-en.html`) 接入 `BK Labs` 专属英文 Topic `Chi: Fridge & Meal Planner`（`topicId=20`，`https://t.me/+PZ_b_KtZO9ozMWM1`，3D 图标 `🍽` `iconCustomEmojiId: 5350344462612570293`）与圆角 Squircle 矢量二维码 `telegram-qr.svg`；
+  - 将全站 `#community` 模块重构为高对比度 Bento 社群展示舱（消除 `#privacy` 下方过大留白、`in oklab` 翠绿光晕与点阵纹理、右侧 Scan Pass 四角取景框卡槽、`@container` 自适应及 `role="status"` 浮层反馈的微信复制交互）。
+
 ## [1.2.9] - 2026-11-01
 
 ### Changed
