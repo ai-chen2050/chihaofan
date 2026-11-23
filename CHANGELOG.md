@@ -2,6 +2,12 @@
 
 All notable changes to the ChiHaoFan (吃好饭) landing website project will be documented in this file.
 
+## [1.3.1] - 2026-11-23
+
+### Changed
+- **🔒 隐私政策补充华为 HMS SDK「软件安装列表」合规披露 (`privacy.html`, `privacy-en.html`)**:
+  - 响应华为 AppGallery《审核指南》第 7.5 与 7.11 项审核意见，在系统权限说明及华为 HMS Core / IAP / AppService SDK 条目下补充说明「软件安装列表（应用列表信息）」仅在用户同意隐私政策后于本地检测 HMS Core 与华为应用市场客户端安装状态，以保障应用内购买结算与版本更新功能。
+
 ## [1.3.0] - 2026-11-18
 
 ### Added
